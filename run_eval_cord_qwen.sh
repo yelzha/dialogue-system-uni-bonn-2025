@@ -6,13 +6,7 @@
 
 
 #cd $SLURM_SUBMIT_DIR
-export OLLAMA_NUM_PARALLEL=4
-export OLLAMA_HOST=127.0.0.1:11434
 
-ollama serve &
-sleep 5
-
-ollama run qwen3:4b || true
 
 module load Miniforge3
 module load git/2.41.0-GCCcore-12.3.0-nodocs
@@ -25,11 +19,5 @@ pip install -r requirements.txt
 
 # Run the evaluation script
 python src/evaluate_cord_qwen.py
-
-cd AgentForest/script
-sh run_experiments.sh
-# python ollama_test.py
-
-pkill ollama
 
 eco "++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
