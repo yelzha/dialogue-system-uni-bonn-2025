@@ -97,6 +97,7 @@ A local AI-powered financial assistant that reads bills and checks from images, 
 
 ## Setup Steps
 ```sh
+# ~/dialogue-system-uni-bonn-2025/init.sh:
 #!/bin/bash
 =========initialization start=========
 ======================================
@@ -128,7 +129,7 @@ sbatch run_test.sh
 ==========code test start=============
 ======================================
 
-# ~/nlp_lab/run_test.sh:
+# ~/dialogue-system-uni-bonn-2025/run_test.sh:
 #!/bin/bash
 #SBATCH --partition=A40devel
 #SBATCH --time=0:05:00
@@ -139,9 +140,9 @@ module load Miniforge3
 module load git/2.41.0-GCCcore-12.3.0-nodocs
 
 
-#conda create -p /home/s06zyelt/nlp_lab/env python=3.10 -y
+#conda create -p /home/s06zyelt/dialogue-system-uni-bonn-2025/env python=3.10 -y
 source /software/easybuild-INTEL_A40/software/Miniforge3/24.1.2-0/etc/profile.d/conda.sh
-conda activate /home/s06zyelt/nlp_lab/env
+conda activate /home/s06zyelt/dialogue-system-uni-bonn-2025/env
 
 pip install numpy pandas
 pip install openai==0.28.1
@@ -153,7 +154,7 @@ python -c "from human_eval.data import read_problems; print('human_eval works')"
 
 
 
-export OLLAMA_HOST=127.0.0.1:11500
+export OLLAMA_HOST=127.0.0.1:11434
 ollama serve &
 sleep 5
 ollama run qwen3:0.6b || true
@@ -169,7 +170,7 @@ echo "Finished!!!"
 
 
 
-# ~/nlp_lab/ollama_test.py:
+# ~/dialogue-system-uni-bonn-2025/ollama_test.py:
 import requests
 
 # old port: 11434

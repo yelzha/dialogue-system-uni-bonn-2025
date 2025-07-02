@@ -17,9 +17,9 @@ ollama run qwen3:4b || true
 module load Miniforge3
 module load git/2.41.0-GCCcore-12.3.0-nodocs
 
-#conda create -p /home/s06zyelt/nlp_lab/env python=3.10 -y
+#conda create -p /home/s06zyelt/dialogue-system-uni-bonn-2025/env python=3.10 -y
 source /software/easybuild-INTEL_A40/software/Miniforge3/24.1.2-0/etc/profile.d/conda.sh
-conda activate /home/s06zyelt/nlp_lab/env
+conda activate /home/s06zyelt/dialogue-system-uni-bonn-2025/env
 
 pip install numpy pandas
 pip install openai==0.28.1
