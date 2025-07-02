@@ -21,6 +21,22 @@ cord_dataset = load_dataset("naver-clova-ix/cord-v2")
 test_set = cord_dataset["test"]
 
 def clean_output(text):
+    text = text.strip()
+
+    # Convert escaped characters to real ones
+    try:
+        text = bytes(text, "utf-8").decode("unicode_escape")
+    except Exception:
+        pass  # fallback in case decode fails
+
+    # Remove code block markers if present
+    if text.startswith("```"):
+        parts = text.split("\n", 1)
+        if len(parts) == 2:
+            text = parts[1]  # remove the first line like ```json
+        if text.endswith("```"):
+            text = text[:-3]  # remove the closing ```
+
     return text.strip()
 
 def extract_fields(record_raw):
@@ -40,25 +56,34 @@ instruction = (
     "Extract and return all structured fields from this receipt image in the following JSON format. "
     "Make sure to follow the correct hierarchical structure and include all known keys from the dataset:\n"
     "{\n"
-    "  \"menu\": {\n"
-    "    \"nm\": string,\n"
-    "    \"num\": string,\n"
-    "    \"cnt\": string,\n"
-    "    \"price\": string,\n"
-    "    \"itemsubtotal\": string,\n"
-    "    \"sub_nm\": optional string,\n"
-    "    \"sub_cnt\": optional string,\n"
-    "    \"sub_price\": optional string\n"
-    "  },\n"
+    "  \"menu\": [\n"
+    "    {\n"
+    "      \"nm\": string,\n"
+    "      \"num\": string,\n"
+    "      \"cnt\": string,\n"
+    "      \"price\": string,\n"
+    "      \"itemsubtotal\": string,\n"
+    "      \"sub_nm\": optional string,\n"
+    "      \"sub_cnt\": optional string,\n"
+    "      \"sub_price\": optional string\n"
+    "    }\n"
+    "  ],\n"
     "  \"sub_total\": {\n"
     "    \"subtotal_price\": string,\n"
     "    \"discount_price\": string,\n"
-    "    \"tax_price\": string\n"
+    "    \"tax_price\": string,\n"
+    "    \"service_price\": string,\n"
+    "    \"etc\": string\n"
     "  },\n"
     "  \"total\": {\n"
     "    \"total_price\": string,\n"
+    "    \"cashprice\": string,\n"
+    "    \"changeprice\": string,\n"
     "    \"creditcardprice\": string,\n"
-    "    \"menuqty_cnt\": string\n"
+    "    \"emoneyprice\": string,\n"
+    "    \"menutype_cnt\": string,\n"
+    "    \"menuqty_cnt\": string,\n"
+    "    \"total_etc\": string\n"
     "  }\n"
     "}\n"
     "Output only the JSON. Do not include explanations or other text."
