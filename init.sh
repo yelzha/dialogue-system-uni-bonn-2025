@@ -1,5 +1,5 @@
 mkdir -p datasets
-curl -L -o dataset/high-quality-invoice-images-for-ocr.zip https://www.kaggle.com/api/v1/datasets/download/osamahosamabdellatif/high-quality-invoice-images-for-ocr
+curl -L -o datasets/high-quality-invoice-images-for-ocr.zip https://www.kaggle.com/api/v1/datasets/download/osamahosamabdellatif/high-quality-invoice-images-for-ocr
 
 
 # double check this place, maybe some mistakes / errors
