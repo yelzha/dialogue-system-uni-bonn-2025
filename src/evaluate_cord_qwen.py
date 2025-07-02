@@ -50,6 +50,43 @@ def extract_fields(record_raw):
 
 
 
+def normalize_menu(menu):
+    if isinstance(menu, dict):
+        return [menu]
+    elif isinstance(menu, list):
+        return menu
+    return []
+
+def normalize_dict(d):
+    return {k: str(v).strip() for k, v in d.items() if v is not None}
+
+def fields_equal(pred, true):
+    if not isinstance(pred, dict) or not isinstance(true, dict):
+        return False
+
+    pred_menu = normalize_menu(pred.get("menu", []))
+    true_menu = normalize_menu(true.get("menu", []))
+
+    if len(pred_menu) != len(true_menu):
+        return False
+
+    for p_item, t_item in zip(pred_menu, true_menu):
+        p_item = normalize_dict(p_item)
+        t_item = normalize_dict(t_item)
+        for key in t_item:
+            if p_item.get(key, "") != t_item[key]:
+                return False
+
+    for section in ["sub_total", "total"]:
+        p_sec = normalize_dict(pred.get(section, {}))
+        t_sec = normalize_dict(true.get(section, {}))
+        for key in t_sec:
+            if p_sec.get(key, "") != t_sec[key]:
+                return False
+
+    return True
+
+
 predictions, ground_truths = [], []
 
 instruction = (
@@ -139,10 +176,11 @@ for sample in tqdm(test_set, desc="Evaluating"):
         predictions.append(pred_fields.get(field, ""))
         ground_truths.append(true_fields[field])
 
-# Basic evaluation using exact match comparison
-correct = sum([p == t for p, t in zip(predictions, ground_truths)])
+# Use this for evaluation
+correct = sum([fields_equal(p, t) for p, t in zip(predictions, ground_truths)])
 total = len(predictions)
-accuracy = correct / total if total else 0
+accuracy = correct / len(predictions) if predictions else 0
+print(f"Accuracy: {accuracy:.4f}")
 
 print(f"Evaluation Results:")
 print(f"Total Samples Evaluated: {total}")
