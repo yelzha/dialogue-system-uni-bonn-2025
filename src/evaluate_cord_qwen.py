@@ -66,7 +66,7 @@ instruction = (
 
 print("Starting evaluation...")
 
-for sample in tqdm([test_set[i] for i in range(2)], desc="Evaluating"):
+for sample in tqdm(test_set, desc="Evaluating"):
     image = sample["image"]
     label_json = sample["ground_truth"]
 
