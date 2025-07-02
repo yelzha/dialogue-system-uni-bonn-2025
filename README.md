@@ -1,49 +1,132 @@
-# instructions
+# Project Roadmap and To-Do List
 
-# =========initialization start=========
-# ======================================
-mkdir -p ~/ollama/bin
+A local AI-powered financial assistant that reads bills and checks from images, extracts relevant data using vision-language models, and logs structured information into Excel or a database.
 
-curl -L https://ollama.com/download/ollama-linux-amd64.tgz -o ollama-linux-amd64.tgz
+---
 
-tar -xzf ollama-linux-amd64.tgz -C ~/ollama
+## Phase 1: Core Functionality
 
-echo 'export PATH="$HOME/ollama/bin:$PATH"' >> ~/.bashrc
-source ~/.bashrc
+### Image Input and Handling
+- [x] Accept image uploads (JPG, PNG, PDF)
+- [ ] Support drag-and-drop interface (Gradio or Streamlit)
+- [ ] Validate file type and resolution
 
-ollama --version
+### Vision-Language Extraction
+- [x] Integrate with Donut / LLaVA for OCR + layout parsing
+- [ ] Switch to PaddleOCR fallback if needed
+- [ ] Auto-detect document type (bill or check)
+- [ ] Extract key fields:
+  - Vendor / Payee
+  - Amount
+  - Date
+  - Invoice or Check Number
+
+### Data Structuring
+- [x] Normalize extracted data to dictionary
+- [x] Convert to pandas DataFrame
+- [ ] Validate extracted fields and apply cleanup rules
+
+---
+
+## Phase 2: Data Logging
+
+### Excel Integration
+- [x] Append structured data to an Excel file
+- [x] Handle file not found or empty case
+- [ ] Create separate sheets for bills and checks
+- [ ] Add timestamp for log entry
+
+### ☐ API/Database Option (Optional)
+- [ ] Create SQLite or Postgres schema
+- [ ] Replace Excel logging with DB insert
+- [ ] Add config toggle: `use_excel = True/False`
+
+---
+
+## Phase 3: Data Analysis
+
+### ☐ Prompt-Driven Insights
+- [ ] Integrate local LLM (Mistral / Phi-3 via Ollama)
+- [ ] Create prompt template for financial Q&A
+- [ ] Build LLMChain to answer queries about:
+  - Total spend by vendor
+  - Spending trends over time
+  - Outstanding unpaid bills
+
+### ☐ Summary Reports
+- [ ] Generate summary report as Excel output
+- [ ] Export monthly report with charts (optional)
+
+---
+
+## Phase 4: Application UI
+
+### ☐ Gradio or Streamlit Interface
+- [ ] Upload or capture image
+- [ ] Show extracted fields in preview
+- [ ] Allow manual corrections before saving
+- [ ] Log result and show success message
+
+---
+
+## Phase 5: Testing and Packaging
+
+### ☐ Unit and Integration Tests
+- [ ] Test image parsing accuracy
+- [ ] Test Excel writing and merging logic
+- [ ] Add test images for regression
+
+### ☐ Packaging and Deployment
+- [ ] Create requirements.txt and setup.py
+- [ ] Add CLI support: `python agent.py --input bill.jpg`
+- [ ] Add Dockerfile for reproducible local setup
+
+---
+
+## Phase 6: Documentation
+
+### ☐ Project Docs
+- [x] README.md with overview and usage
+- [ ] CONTRIBUTING.md
+- [ ] Examples and sample input images
+- [ ] Model benchmarks and comparison
+
+---
 
 
 
-
-
-
-
+## Setup Steps
+```sh
+#!/bin/bash
+=========initialization start=========
+======================================
+mkdir -p datasets
+curl -L -o dataset/high-quality-invoice-images-for-ocr.zip https://www.kaggle.com/api/v1/datasets/download/osamahosamabdellatif/high-quality-invoice-images-for-ocr
 
 
 # double check this place, maybe some mistakes / errors
-
 module load Miniforge3
 module load git/2.41.0-GCCcore-12.3.0-nodocs
-conda create -p /home/s06zyelt/nlp_lab/env python=3.10 -y
+conda create -p /home/s06zyelt/dialogue-system-uni-bonn-2025/env python=3.10 -y
 source /software/easybuild-INTEL_A40/software/Miniforge3/24.1.2-0/etc/profile.d/conda.sh
-conda activate /home/s06zyelt/nlp_lab/env
+conda activate /home/s06zyelt/dialogue-system-uni-bonn-2025/env
 
-cd nlp_lab
+cd dialogue-system-uni-bonn-2025
 sbatch run_test.sh
 
-# ==========initialization end==========
-# ======================================
+==========initialization end==========
+======================================
+```
 
 
 
 
 
 
-
-
-# ==========code test start=============
-# ======================================
+```sh
+#!/bin/bash
+==========code test start=============
+======================================
 
 # ~/nlp_lab/run_test.sh:
 #!/bin/bash
@@ -109,5 +192,6 @@ print(result)
 with open('output.txt', 'w') as f:
     f.write(result)
 
-# ==========code test end===============
-# ======================================
+==========code test end===============
+======================================
+```
