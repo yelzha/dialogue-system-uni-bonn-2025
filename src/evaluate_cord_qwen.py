@@ -3,39 +3,34 @@
 import torch
 import json
 from PIL import Image
-from datasets import load_dataset
+from datasets import load_dataset, Dataset
 from transformers import AutoProcessor
 from qwen_vl_utils import process_vision_info
 from tqdm import tqdm
 from transformers import Qwen2_5_VLForConditionalGeneration
 
-# Load model and processor
 model_id = "Qwen/Qwen2.5-VL-3B-Instruct"
 model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
     model_id, torch_dtype="auto", device_map="auto"
 )
 processor = AutoProcessor.from_pretrained(model_id)
 
-# Load dataset
 cord_dataset = load_dataset("naver-clova-ix/cord-v2")
 test_set = cord_dataset["test"]
 
 def clean_output(text):
     text = text.strip()
-
-    # Convert escaped characters to real ones
     try:
         text = bytes(text, "utf-8").decode("unicode_escape")
     except Exception:
-        pass  # fallback in case decode fails
+        pass
 
-    # Remove code block markers if present
     if text.startswith("```"):
         parts = text.split("\n", 1)
         if len(parts) == 2:
-            text = parts[1]  # remove the first line like ```json
+            text = parts[1]
         if text.endswith("```"):
-            text = text[:-3]  # remove the closing ```
+            text = text[:-3]
 
     return text.strip()
 
@@ -45,20 +40,54 @@ def extract_fields(record_raw):
     fields = {}
     for key in ["menu", "sub_total", "total"]:
         if key in json_data:
-            fields[key] = json_data[key]
+            if key == "menu":
+                fields[key] = normalize_menu(json_data[key])
+            else:
+                fields[key] = json_data[key]
     return fields
-
-
 
 def normalize_menu(menu):
     if isinstance(menu, dict):
-        return [menu]
+        return [normalize_dict(menu)]
     elif isinstance(menu, list):
-        return menu
+        return [normalize_dict(m) for m in menu]
     return []
 
 def normalize_dict(d):
     return {k: str(v).strip() for k, v in d.items() if v is not None}
+
+def compute_fieldwise_accuracy(pred_fields, true_fields):
+    correct = 0
+    total = 0
+
+    # Handle menu
+    pred_menu = normalize_menu(pred_fields.get("menu", []))
+    true_menu = normalize_menu(true_fields.get("menu", []))
+
+    for t_item in true_menu:
+        total += len(t_item)
+        matched = False
+        for p_item in pred_menu:
+            # Check if all keys in true item match with predicted
+            if all(p_item.get(k, "").strip() == v.strip() for k, v in t_item.items()):
+                correct += len(t_item)
+                matched = True
+                break
+        if not matched:
+            correct += sum(1 for k in t_item if any(p_item.get(k, "") == t_item[k] for p_item in pred_menu))
+
+    # Handle sub_total and total
+    for section in ["sub_total", "total"]:
+        pred_section = normalize_dict(pred_fields.get(section, {}))
+        true_section = normalize_dict(true_fields.get(section, {}))
+
+        for k, v in true_section.items():
+            total += 1
+            if pred_section.get(k, "") == v:
+                correct += 1
+
+    accuracy = correct / total if total else 0.0
+    return accuracy, correct, total
 
 def fields_equal(pred, true):
     if not isinstance(pred, dict) or not isinstance(true, dict):
@@ -85,9 +114,6 @@ def fields_equal(pred, true):
                 return False
 
     return True
-
-
-predictions, ground_truths = [], []
 
 instruction = (
     "Extract and return all structured fields from this receipt image in the following JSON format. "
@@ -128,7 +154,11 @@ instruction = (
 
 print("Starting evaluation...")
 
-for sample in tqdm(test_set, desc="Evaluating"):
+records = []
+total_correct = 0
+total_elements = 0
+
+for idx, sample in enumerate(test_set):
     image = sample["image"]
     label_json = sample["ground_truth"]
 
@@ -172,16 +202,34 @@ for sample in tqdm(test_set, desc="Evaluating"):
 
     true_fields = extract_fields(label_json)
 
-    for field in true_fields:
-        predictions.append(pred_fields.get(field, ""))
-        ground_truths.append(true_fields[field])
+    accuracy, correct, total = compute_fieldwise_accuracy(pred_fields, true_fields)
 
-# Use this for evaluation
-correct = sum([fields_equal(p, t) for p, t in zip(predictions, ground_truths)])
-total = len(predictions)
-accuracy = correct / len(predictions) if predictions else 0
-print(f"Accuracy: {accuracy:.4f}")
+    records.append({
+        "index": idx,
+        "image": image,
+        "ground_truth": true_fields,
+        "predicted": pred_fields,
+        "accuracy": accuracy,
+        "correct": correct,
+        "total": total
+    })
+    total_correct += correct
+    total_elements += total
 
-print(f"Evaluation Results:")
-print(f"Total Samples Evaluated: {total}")
-print(f"Exact Match Accuracy: {accuracy:.4f}")
+    print((
+        f"[{idx + 1:04d}] Accuracy: {accuracy:.4f} ({correct}/{total}) | "
+        f"Running Avg: {(total_correct / total_elements):.4f} "
+        f"({total_correct}/{total_elements})"
+    ))
+
+
+pred_dataset = Dataset.from_list(records)
+pred_dataset.save_to_disk("datasets/cord_v2_qwen2.5-vl-3b")
+
+# from datasets import load_from_disk
+# ds = load_from_disk("datasets/cord_v2_qwen2.5-vl-3b")
+
+
+overall_accuracy = total_correct / total_elements if total_elements else 0
+print(f"Field-wise Accuracy: {overall_accuracy:.4f}")
+print(f"++++++++++++++++++++++++++++++++++++")
