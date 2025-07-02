@@ -1,7 +1,6 @@
-torch>=2.0
 transformers>=4.40.0
 datasets>=2.18.0
 tqdm>=4.66.0
 Pillow>=10.0.0
 scikit-learn>=1.3.0
-qwen-vl-utils @ git+https://github.com/QwenLM/Qwen-VL.git#subdirectory=utils
+qwen-vl-utils
