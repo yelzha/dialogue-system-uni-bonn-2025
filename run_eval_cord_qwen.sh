@@ -16,7 +16,7 @@ source /software/easybuild-INTEL_A40/software/Miniforge3/24.1.2-0/etc/profile.d/
 conda activate /home/s06zyelt/dialogue-system-uni-bonn-2025/env
 
 pip install torch==2.1.2 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-pip install numpy<2.0
+pip install "numpy<2.0"
 pip install -r requirements.txt
 
 # Run the evaluation script
