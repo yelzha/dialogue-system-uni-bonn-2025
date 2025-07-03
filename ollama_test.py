@@ -3,7 +3,7 @@ import requests
 # old port: 11434
 
 response = requests.post(
-    'http://localhost:11500/api/generate',
+    'http://127.0.0.1:11434/api/generate',
     json={
         'model': 'qwen3:14b',
         'prompt': 'What is the capital of France?',
