@@ -53,7 +53,12 @@ def parse_image(image_path):
         "model": "qwen2.5vl:3b",
         "prompt": instruction,
         "images": [image_b64],
-        "stream": False
+        "stream": False,
+        "options": {
+            "temperature": 0.0,
+            "top_p": 0.9,
+            "max_tokens": 4096  # You can increase to 4096 if needed
+        }
     }
 
     try:

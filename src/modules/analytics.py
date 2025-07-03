@@ -3,6 +3,16 @@
 import json
 import pandas as pd
 
+
+def clean_money(value):
+    """Convert a string like '$1,234.56' to float. Returns NaN on failure."""
+    if isinstance(value, str):
+        value = value.replace("$", "").replace(",", "").strip()
+    try:
+        return float(value)
+    except:
+        return float("nan")
+
 def build_dataframe_from_vectorstore(vectorstore):
     """Load all documents from Chroma and convert to pandas DataFrames (main, line items)."""
     docs = vectorstore.similarity_search("", k=1000)  # Load all docs
