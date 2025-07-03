@@ -18,6 +18,6 @@ conda activate /home/s06zyelt/dialogue-system-uni-bonn-2025/env
 pip install -r requirements.txt
 
 # Run the evaluation script
+echo "++++++++++++++++++++++START+++++++++++++++++++++++++++++"
 python src/evaluate_cord_qwen.py
-
-echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+echo "++++++++++++++++++++++FINISHED++++++++++++++++++++++++++"

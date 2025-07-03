@@ -2,118 +2,16 @@
 
 import torch
 import json
+from tqdm import tqdm
 from PIL import Image
-from datasets import load_dataset, Dataset
+from datasets import load_dataset
+from datasets import Dataset, Features, Value, Image
 from transformers import AutoProcessor
 from qwen_vl_utils import process_vision_info
-from tqdm import tqdm
 from transformers import Qwen2_5_VLForConditionalGeneration
 
-model_id = "Qwen/Qwen2.5-VL-3B-Instruct"
-model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
-    model_id, torch_dtype="auto", device_map="auto"
-)
-processor = AutoProcessor.from_pretrained(model_id)
+from utils import clean_output, extract_fields, compute_fieldwise_accuracy
 
-cord_dataset = load_dataset("naver-clova-ix/cord-v2")
-test_set = cord_dataset["test"]
-
-def clean_output(text):
-    text = text.strip()
-    try:
-        text = bytes(text, "utf-8").decode("unicode_escape")
-    except Exception:
-        pass
-
-    if text.startswith("```"):
-        parts = text.split("\n", 1)
-        if len(parts) == 2:
-            text = parts[1]
-        if text.endswith("```"):
-            text = text[:-3]
-
-    return text.strip()
-
-def extract_fields(record_raw):
-    record_json = json.loads(record_raw)
-    json_data = record_json['gt_parse']
-    fields = {}
-    for key in ["menu", "sub_total", "total"]:
-        if key in json_data:
-            if key == "menu":
-                fields[key] = normalize_menu(json_data[key])
-            else:
-                fields[key] = json_data[key]
-    return fields
-
-def normalize_menu(menu):
-    if isinstance(menu, dict):
-        return [normalize_dict(menu)]
-    elif isinstance(menu, list):
-        return [normalize_dict(m) for m in menu]
-    return []
-
-def normalize_dict(d):
-    return {k: str(v).strip() for k, v in d.items() if v is not None}
-
-def compute_fieldwise_accuracy(pred_fields, true_fields):
-    correct = 0
-    total = 0
-
-    # Handle menu
-    pred_menu = normalize_menu(pred_fields.get("menu", []))
-    true_menu = normalize_menu(true_fields.get("menu", []))
-
-    for t_item in true_menu:
-        total += len(t_item)
-        matched = False
-        for p_item in pred_menu:
-            # Check if all keys in true item match with predicted
-            if all(p_item.get(k, "").strip() == v.strip() for k, v in t_item.items()):
-                correct += len(t_item)
-                matched = True
-                break
-        if not matched:
-            correct += sum(1 for k in t_item if any(p_item.get(k, "") == t_item[k] for p_item in pred_menu))
-
-    # Handle sub_total and total
-    for section in ["sub_total", "total"]:
-        pred_section = normalize_dict(pred_fields.get(section, {}))
-        true_section = normalize_dict(true_fields.get(section, {}))
-
-        for k, v in true_section.items():
-            total += 1
-            if pred_section.get(k, "") == v:
-                correct += 1
-
-    accuracy = correct / total if total else 0.0
-    return accuracy, correct, total
-
-def fields_equal(pred, true):
-    if not isinstance(pred, dict) or not isinstance(true, dict):
-        return False
-
-    pred_menu = normalize_menu(pred.get("menu", []))
-    true_menu = normalize_menu(true.get("menu", []))
-
-    if len(pred_menu) != len(true_menu):
-        return False
-
-    for p_item, t_item in zip(pred_menu, true_menu):
-        p_item = normalize_dict(p_item)
-        t_item = normalize_dict(t_item)
-        for key in t_item:
-            if p_item.get(key, "") != t_item[key]:
-                return False
-
-    for section in ["sub_total", "total"]:
-        p_sec = normalize_dict(pred.get(section, {}))
-        t_sec = normalize_dict(true.get(section, {}))
-        for key in t_sec:
-            if p_sec.get(key, "") != t_sec[key]:
-                return False
-
-    return True
 
 instruction = (
     "Extract and return all structured fields from this receipt image in the following JSON format. "
@@ -152,78 +50,97 @@ instruction = (
     "Output only the JSON. Do not include explanations or other text."
 )
 
-print("Starting evaluation...")
+print("Starting loading model...")
+model_id = "Qwen/Qwen2.5-VL-3B-Instruct"
+model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
+    model_id, torch_dtype="auto", device_map="auto"
+)
+processor = AutoProcessor.from_pretrained(model_id)
+print("Finished loading model...")
 
+cord_dataset = load_dataset("naver-clova-ix/cord-v2")
+test_set = cord_dataset["test"]
+
+print("Starting evaluation...")
 records = []
 total_correct = 0
 total_elements = 0
 
-for idx, sample in enumerate(test_set):
-    image = sample["image"]
-    label_json = sample["ground_truth"]
+with tqdm(enumerate(test_set), total=len(test_set), desc="Evaluating") as pbar:
+    for idx, sample in pbar:
+        image = sample["image"]
+        label_json = sample["ground_truth"]
 
-    messages = [
-        {
-            "role": "user",
-            "content": [
-                {"type": "image", "image": image},
-                {"type": "text", "text": instruction}
-            ]
-        }
-    ]
+        messages = [
+            {
+                "role": "user",
+                "content": [
+                    {"type": "image", "image": image},
+                    {"type": "text", "text": instruction}
+                ]
+            }
+        ]
 
-    text_prompt = processor.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
-    image_inputs, video_inputs = process_vision_info(messages)
+        text_prompt = processor.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+        image_inputs, video_inputs = process_vision_info(messages)
 
-    inputs = processor(
-        text=[text_prompt],
-        images=image_inputs,
-        videos=video_inputs,
-        padding=True,
-        return_tensors="pt"
-    ).to(model.device)
+        inputs = processor(
+            text=[text_prompt],
+            images=image_inputs,
+            videos=video_inputs,
+            padding=True,
+            return_tensors="pt"
+        ).to(model.device)
 
-    with torch.no_grad():
-        generated_ids = model.generate(**inputs, max_new_tokens=1024)
+        with torch.no_grad():
+            generated_ids = model.generate(**inputs, max_new_tokens=1024)
 
-    generated_ids_trimmed = [
-        out_ids[len(in_ids):] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
-    ]
-    pred_result = processor.batch_decode(
-        generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
-    )[0]
+        generated_ids_trimmed = [
+            out_ids[len(in_ids):] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
+        ]
+        pred_result = processor.batch_decode(
+            generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
+        )[0]
 
-    pred_result = clean_output(pred_result)
+        pred_result = clean_output(pred_result)
 
-    try:
-        pred_fields = extract_fields(json.dumps({"gt_parse": json.loads(pred_result)}))
-    except:
-        pred_fields = {}
+        try:
+            pred_fields = extract_fields(json.dumps({"gt_parse": json.loads(pred_result)}))
+        except:
+            pred_fields = {}
 
-    true_fields = extract_fields(label_json)
+        true_fields = extract_fields(label_json)
 
-    accuracy, correct, total = compute_fieldwise_accuracy(pred_fields, true_fields)
+        accuracy, correct, total = compute_fieldwise_accuracy(pred_fields, true_fields)
 
-    records.append({
-        "index": idx,
-        "image": image,
-        "ground_truth": true_fields,
-        "predicted": pred_fields,
-        "accuracy": accuracy,
-        "correct": correct,
-        "total": total
-    })
-    total_correct += correct
-    total_elements += total
+        records.append({
+            "index": idx,
+            "image": image,
+            "ground_truth": json.dumps(true_fields, ensure_ascii=False),
+            "predicted": json.dumps(pred_fields, ensure_ascii=False),
+            "accuracy": float(accuracy),
+            "correct": int(correct),
+            "total": int(total)
+        })
 
-    print((
-        f"[{idx + 1:04d}] Accuracy: {accuracy:.4f} ({correct}/{total}) | "
-        f"Running Avg: {(total_correct / total_elements):.4f} "
-        f"({total_correct}/{total_elements})"
-    ))
+        total_correct += correct
+        total_elements += total
 
+        running_avg = (total_correct / total_elements) if total_elements else 0.0
+        pbar.set_description(f"[{idx + 1:04d}] Accuracy: {accuracy:.4f} ({correct}/{total})")
+        pbar.set_postfix(running_avg=f"{running_avg:.4f}", correct=total_correct, total=total_elements)
+print("Finished evaluation...")
 
-pred_dataset = Dataset.from_list(records)
+features = Features({
+    "id": Value("int32"),
+    "image": Image(decode=True, id=None),
+    "ground_truth": Value("string", id=None),
+    "predicted": Value("string", id=None),
+    "accuracy": Value("float32", id=None),
+    "correct": Value("int32", id=None),
+    "total": Value("int32", id=None)
+})
+pred_dataset = Dataset.from_list(records, features=features)
 pred_dataset.save_to_disk("datasets/cord_v2_qwen2.5-vl-3b")
 
 # from datasets import load_from_disk
