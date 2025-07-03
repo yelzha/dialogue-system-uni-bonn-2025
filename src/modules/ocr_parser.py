@@ -50,7 +50,7 @@ def parse_image(image_path):
     image_b64 = image_to_base64(image_path)
 
     payload = {
-        "model": "qwen:vl",
+        "model": "qwen2.5vl:3b",
         "prompt": instruction,
         "images": [image_b64],
         "stream": False
