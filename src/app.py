@@ -19,7 +19,7 @@ st.title("AI Agent: Check / Invoice Analyzer")
 
 # Initialize Vector Store + RAG Chain
 vectorstore = init_vectorstore()
-rag_chain = get_rag_chain(vectorstore)
+rag_chain = None
 
 # Upload Invoice
 st.header("Upload a Check / Invoice Image")
@@ -62,11 +62,15 @@ if uploaded_file:
     else:
         st.info("No line items detected.")
 
+    rag_chain = get_rag_chain(vectorstore)
+
 # Q&A Section
 st.header("Ask a Question")
 query = st.text_input("Try: 'How much did we spend in June?'")
 
 if query:
+    if rag_chain is None:
+        rag_chain = get_rag_chain(vectorstore)
     response = answer_question(rag_chain, query)
     st.markdown(f"**Answer:** {response}")
 

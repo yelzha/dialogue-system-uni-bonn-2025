@@ -24,7 +24,9 @@ A local-first AI agent system to parse, store, search, and analyze invoices and 
 
 3. Start Ollama:
 
-   ollama run qwen:vl
+   - ollama serve
+   - ollama run qwen2.5vl:3b
+   - ollama run llama3
 
 4. Run the Streamlit app:
 

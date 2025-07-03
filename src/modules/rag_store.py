@@ -1,7 +1,8 @@
 # modules/rag_store.py
 
-from langchain_community.vectorstores import Chroma
-from langchain_community.embeddings import HuggingFaceEmbeddings
+import json
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_chroma import Chroma
 from langchain.schema import Document
 from config import CHROMA_DB_DIR
 
@@ -21,10 +22,11 @@ def init_vectorstore():
 
 def add_doc(vectorstore, parsed_data):
     """
-    Store a parsed document (OCR result) in the vector store with full metadata.
-    Includes all known invoice/check fields, even if values are missing.
+    Store a parsed document (OCR result) in the vector store with safe metadata.
+    Complex fields like lists are stringified for compatibility.
     """
-    # Complete schema
+
+    # Define all expected fields with defaults
     fields = {
         "invoice_number": "",
         "check_number": "",
@@ -46,19 +48,21 @@ def add_doc(vectorstore, parsed_data):
         "account_number": "",
         "routing_number": "",
         "bank_name": "",
-        "items": [],
+        "items": [],  # list of dicts
         "document_type": "",
         "notes": "",
         "text": ""
     }
 
-    # Merge with parsed values
     fields.update(parsed_data)
 
-    clean_metadata = {
-        k: v for k, v in fields.items()
-        if isinstance(v, (str, int, float, bool, type(None)))
-    }
+    # Filter and convert non-scalar values (list/dict) to JSON strings
+    def safe_value(v):
+        if isinstance(v, (str, int, float, bool)) or v is None:
+            return v
+        return json.dumps(v, ensure_ascii=False)
+
+    clean_metadata = {k: safe_value(v) for k, v in fields.items()}
 
     doc = Document(
         page_content=fields["text"] or "No OCR text found.",

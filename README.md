@@ -87,11 +87,16 @@ A local-first AI agent system to parse, store, search, and analyze invoices and 
 
 3. Start Ollama:
 
-   ollama run qwen:vl
+   ollama run qwen2.5vl-3b
+   ollama run llama
 
 4. Run the Streamlit app:
 
    streamlit run app.py
+
+5. On your Windows / Linux
+
+   ssh -L 8501:localhost:8501 your-username@host-address.de
 
 ## Folder Structure
 
