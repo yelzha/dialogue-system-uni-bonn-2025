@@ -1,5 +1,6 @@
 # modules/analytics.py
 
+import json
 import pandas as pd
 
 def build_dataframe_from_vectorstore(vectorstore):
@@ -51,18 +52,46 @@ def build_dataframe_from_vectorstore(vectorstore):
 def monthly_summary(df_main):
     if df_main.empty:
         return df_main
-    df_main['month'] = df_main['date'].dt.to_period('M')
-    return df_main.groupby('month').agg(total_spent=('amount', 'sum')).reset_index()
+
+    df_main = df_main.copy()
+    df_main["date"] = pd.to_datetime(df_main["date"], errors="coerce")
+    df_main = df_main.dropna(subset=["date"])
+
+    df_main["month"] = df_main["date"].dt.to_period("M")
+    df_main["total"] = pd.to_numeric(df_main["total"], errors="coerce")
+    return df_main.groupby("month")["total"].sum().reset_index()
 
 def top_vendors(df_main, n=5):
     if df_main.empty:
-        return df_main
-    return df_main.groupby('vendor').agg(total_spent=('amount', 'sum')).sort_values(by='total_spent', ascending=False).head(n).reset_index()
+        return df_main.copy()
+
+    df_main = df_main.copy()
+    df_main["amount"] = pd.to_numeric(df_main["amount"], errors="coerce")
+
+    return (
+        df_main.groupby("vendor")
+        .agg(total_spent=("amount", "sum"))
+        .sort_values(by="total_spent", ascending=False)
+        .head(n)
+        .reset_index()
+    )
 
 def top_items(df_items, n=5):
     if df_items.empty:
-        return df_items
-    return df_items.groupby('item').agg(
-        total_sold=('qty', 'sum'),
-        total_revenue=('total', 'sum')
-    ).sort_values(by='total_revenue', ascending=False).head(n).reset_index()
+        return df_items.copy()
+
+    df_items = df_items.copy()
+    df_items["qty"] = pd.to_numeric(df_items["qty"], errors="coerce")
+    df_items["total"] = pd.to_numeric(df_items["total"], errors="coerce")
+
+    return (
+        df_items.groupby("item")
+        .agg(
+            total_sold=("qty", "sum"),
+            total_revenue=("total", "sum")
+        )
+        .sort_values(by="total_revenue", ascending=False)
+        .head(n)
+        .reset_index()
+    )
+
