@@ -7,7 +7,6 @@ Pillow
 
 # LangChain + Vector Store
 langchain
-langchain-chroma
 chromadb
 
 # Local embeddings
