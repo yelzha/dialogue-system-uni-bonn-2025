@@ -55,10 +55,14 @@ def add_doc(vectorstore, parsed_data):
     # Merge with parsed values
     fields.update(parsed_data)
 
-    # Store document
+    clean_metadata = {
+        k: v for k, v in fields.items()
+        if isinstance(v, (str, int, float, bool, type(None)))
+    }
+
     doc = Document(
         page_content=fields["text"] or "No OCR text found.",
-        metadata=fields
+        metadata=clean_metadata
     )
 
     vectorstore.add_documents([doc])
