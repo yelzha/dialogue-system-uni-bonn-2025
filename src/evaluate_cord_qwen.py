@@ -66,70 +66,72 @@ records = []
 total_correct = 0
 total_elements = 0
 
-with tqdm(enumerate(test_set), total=len(test_set), desc="Evaluating") as pbar:
-    for idx, sample in pbar:
-        image = sample["image"]
-        label_json = sample["ground_truth"]
+pbar = tqdm(enumerate(test_set), total=len(test_set), desc="Evaluating", dynamic_ncols=False)
+for idx, sample in pbar:
+    image = sample["image"]
+    label_json = sample["ground_truth"]
 
-        messages = [
-            {
-                "role": "user",
-                "content": [
-                    {"type": "image", "image": image},
-                    {"type": "text", "text": instruction}
-                ]
-            }
-        ]
+    messages = [
+        {
+            "role": "user",
+            "content": [
+                {"type": "image", "image": image},
+                {"type": "text", "text": instruction}
+            ]
+        }
+    ]
 
-        text_prompt = processor.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
-        image_inputs, video_inputs = process_vision_info(messages)
+    text_prompt = processor.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+    image_inputs, video_inputs = process_vision_info(messages)
 
-        inputs = processor(
-            text=[text_prompt],
-            images=image_inputs,
-            videos=video_inputs,
-            padding=True,
-            return_tensors="pt"
-        ).to(model.device)
+    inputs = processor(
+        text=[text_prompt],
+        images=image_inputs,
+        videos=video_inputs,
+        padding=True,
+        return_tensors="pt"
+    ).to(model.device)
 
-        with torch.no_grad():
-            generated_ids = model.generate(**inputs, max_new_tokens=1024)
+    with torch.no_grad():
+        generated_ids = model.generate(**inputs, max_new_tokens=1024)
 
-        generated_ids_trimmed = [
-            out_ids[len(in_ids):] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
-        ]
-        pred_result = processor.batch_decode(
-            generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
-        )[0]
+    generated_ids_trimmed = [
+        out_ids[len(in_ids):] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
+    ]
+    pred_result = processor.batch_decode(
+        generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
+    )[0]
 
-        pred_result = clean_output(pred_result)
+    pred_result = clean_output(pred_result)
 
-        try:
-            pred_fields = extract_fields(json.dumps({"gt_parse": json.loads(pred_result)}))
-        except:
-            pred_fields = {}
+    try:
+        pred_fields = extract_fields(json.dumps({"gt_parse": json.loads(pred_result)}))
+    except:
+        pred_fields = {}
 
-        true_fields = extract_fields(label_json)
+    true_fields = extract_fields(label_json)
 
-        accuracy, correct, total = compute_fieldwise_accuracy(pred_fields, true_fields)
+    accuracy, correct, total = compute_fieldwise_accuracy(pred_fields, true_fields)
 
-        records.append({
-            "index": idx,
-            "image": image,
-            "ground_truth": json.dumps(true_fields, ensure_ascii=False),
-            "predicted": json.dumps(pred_fields, ensure_ascii=False),
-            "accuracy": float(accuracy),
-            "correct": int(correct),
-            "total": int(total)
-        })
+    records.append({
+        "index": idx,
+        "image": image,
+        "ground_truth": json.dumps(true_fields, ensure_ascii=False),
+        "predicted": json.dumps(pred_fields, ensure_ascii=False),
+        "accuracy": float(accuracy),
+        "correct": int(correct),
+        "total": int(total)
+    })
 
-        total_correct += correct
-        total_elements += total
+    total_correct += correct
+    total_elements += total
 
-        running_avg = (total_correct / total_elements) if total_elements else 0.0
-        pbar.set_description(f"[{idx + 1:04d}] Accuracy: {accuracy:.4f} ({correct}/{total})")
-        pbar.set_postfix(running_avg=f"{running_avg:.4f}", correct=total_correct, total=total_elements)
-        print("\n")
+    running_avg = (total_correct / total_elements) if total_elements else 0.0
+    pbar.write(
+        f"[{idx + 1:04d}] Accuracy: {accuracy:.4f} ({correct}/{total})\n"
+        f"Running Avg: {(total_correct / total_elements):.4f} "
+        f"({total_correct}/{total_elements})"
+    )
 print("Finished evaluation...")
 
 features = Features({
