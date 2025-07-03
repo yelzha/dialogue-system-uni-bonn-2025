@@ -1,97 +1,141 @@
-# Project Roadmap and To-Do List
+# No More Manual Invoices! (OCR + RAG + LLM via Ollama)
+# Team #botz
 
-A local AI-powered financial assistant that reads bills and checks from images, extracts relevant data using vision-language models, and logs structured information into Excel or a database.
-
----
-
-## Phase 1: Core Functionality
-
-### Image Input and Handling
-- [x] Accept image uploads (JPG, PNG, PDF)
-- [ ] Support drag-and-drop interface (Gradio or Streamlit)
-- [ ] Validate file type and resolution
-
-### Vision-Language Extraction
-- [x] Integrate with Donut / LLaVA for OCR + layout parsing
-- [ ] Switch to PaddleOCR fallback if needed
-- [ ] Auto-detect document type (bill or check)
-- [ ] Extract key fields:
-  - Vendor / Payee
-  - Amount
-  - Date
-  - Invoice or Check Number
-
-### Data Structuring
-- [x] Normalize extracted data to dictionary
-- [x] Convert to pandas DataFrame
-- [ ] Validate extracted fields and apply cleanup rules
+A local-first AI agent system to parse, store, search, and analyze invoices and checks using OCR, vector databases, and local large language models via Ollama.
 
 ---
 
-## Phase 2: Data Logging
+## TO-DO
 
-### Excel Integration
-- [x] Append structured data to an Excel file
-- [x] Handle file not found or empty case
-- [ ] Create separate sheets for bills and checks
-- [ ] Add timestamp for log entry
+### Phase 1: Core Functionality
 
-### ☐ API/Database Option (Optional)
-- [ ] Create SQLite or Postgres schema
-- [ ] Replace Excel logging with DB insert
-- [ ] Add config toggle: `use_excel = True/False`
+#### Image Upload and Parsing
+- [x] Modular folder structure for OCR, RAG, LLM, analytics, UI
+- [x] Accept image uploads (JPG, PNG)
+- [x] Parse invoice/check images using Qwen2.5-VL via Ollama
 
----
-
-## Phase 3: Data Analysis
-
-### ☐ Prompt-Driven Insights
-- [ ] Integrate local LLM (Mistral / Phi-3 via Ollama)
-- [ ] Create prompt template for financial Q&A
-- [ ] Build LLMChain to answer queries about:
-  - Total spend by vendor
-  - Spending trends over time
-  - Outstanding unpaid bills
-
-### ☐ Summary Reports
-- [ ] Generate summary report as Excel output
-- [ ] Export monthly report with charts (optional)
+#### Data Extraction
+- [x] Extract structured fields (vendor, amount, date, etc.)
+- [x] Normalize extracted OCR data into consistent schema
 
 ---
 
-## Phase 4: Application UI
+### Phase 2: Storage and Retrieval (RAG)
 
-### ☐ Gradio or Streamlit Interface
-- [ ] Upload or capture image
-- [ ] Show extracted fields in preview
-- [ ] Allow manual corrections before saving
-- [ ] Log result and show success message
+#### Embedding and Storage
+- [x] Store documents in Chroma vector store using local sentence-transformer embeddings
+- [x] Index structured OCR output using vector search
 
----
-
-## Phase 5: Testing and Packaging
-
-### ☐ Unit and Integration Tests
-- [ ] Test image parsing accuracy
-- [ ] Test Excel writing and merging logic
-- [ ] Add test images for regression
-
-### ☐ Packaging and Deployment
-- [ ] Create requirements.txt and setup.py
-- [ ] Add CLI support: `python agent.py --input bill.jpg`
-- [ ] Add Dockerfile for reproducible local setup
+#### Retrieval and LLM Integration
+- [x] Enable Retrieval-Augmented Generation (RAG) with LangChain
+- [x] Use LLaMA/Qwen/Mistral via Ollama for question answering
 
 ---
 
-## Phase 6: Documentation
+### Phase 3: Analytics and Reporting
 
-### ☐ Project Docs
-- [x] README.md with overview and usage
-- [ ] CONTRIBUTING.md
-- [ ] Examples and sample input images
-- [ ] Model benchmarks and comparison
+#### Data Aggregation
+- [x] Analyze data using Pandas (monthly summaries, top vendors)
+- [x] Extract line item totals and vendor grouping
+
+#### Export and Filtering
+- [ ] Metadata filtering by vendor/date/category (optional)
+- [ ] Export data to CSV/Excel (optional)
 
 ---
+
+### Phase 4: Application UI
+
+#### Frontend
+- [x] Streamlit UI for upload, Q&A, preview, and reporting
+- [x] Display parsed metadata and items in readable layout
+
+---
+
+### Phase 5: Extensibility and Deployment
+
+#### OCR Fallback and Advanced Formats
+- [ ] PaddleOCR fallback if vision model fails (optional)
+- [ ] PDF support and table extraction (optional)
+
+#### Deployment
+- [ ] Docker containerization (optional)
+- [ ] CLI interface for headless execution (optional)
+
+---
+
+## Installation
+
+### Requirements
+
+- Python 3.9+
+- Ollama installed locally: https://ollama.com
+- Models pulled via Ollama:
+  - ollama pull qwen:vl
+  - ollama pull llama3
+
+### Setup Instructions
+
+1. Clone repository:
+
+   git clone https://github.com/yelzha/dialogue-system-uni-bonn-2025.git  
+   cd dialogue-system-uni-bonn-2025/src
+
+2. Install dependencies:
+
+   pip install -r requirements.txt
+
+3. Start Ollama:
+
+   ollama run qwen:vl
+
+4. Run the Streamlit app:
+
+   streamlit run app.py
+
+## Folder Structure
+
+check-ai-agent/  
+├── app.py  
+├── config.py  
+├── requirements.txt  
+├── .gitignore  
+├── data/  
+├── docs/  
+├── modules/  
+│   ├── ocr_parser.py  
+│   ├── rag_store.py  
+│   ├── llm_provider.py  
+│   ├── llm_agent.py  
+│   └── analytics.py  
+└── README.md
+
+## Usage
+
+1. Upload invoice/check image via UI
+2. OCR using Qwen2.5-VL (Ollama)
+3. Store parsed data in Chroma vector store
+4. Ask questions using RAG + Ollama LLM
+5. View analytics
+
+## OCR Output Fields
+
+- invoice_number, check_number, po_number  
+- vendor, vendor_address, customer_name, customer_address  
+- date, due_date, payment_date  
+- amount, subtotal, tax, discount, total, currency  
+- payment_method, account_number, routing_number, bank_name  
+- document_type, notes, text  
+- items[] (item, qty, price, total)
+
+## Stack
+
+- OCR: Qwen2.5-VL via Ollama  
+- LLM: LLaMA 3 / Qwen via Ollama  
+- Embedding: sentence-transformers/all-MiniLM-L6-v2  
+- Vector DB: Chroma  
+- Frontend: Streamlit  
+- Analytics: Pandas
 
 
 

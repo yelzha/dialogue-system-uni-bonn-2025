@@ -1,0 +1,16 @@
+# Core frameworks
+streamlit
+pandas
+tqdm
+requests
+Pillow
+
+# LangChain + Vector Store
+langchain
+chromadb
+
+# Local embeddings
+sentence-transformers
+
+# Optional (if you want to use datasets from Hugging Face)
+datasets

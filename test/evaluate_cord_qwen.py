@@ -113,7 +113,7 @@ for idx, sample in enumerate(tqdm(test_set, total=len(test_set), desc="Evaluatin
     accuracy, correct, total = compute_fieldwise_accuracy(pred_fields, true_fields)
 
     records.append({
-        "index": idx,
+        "id": idx,
         "image": image,
         "ground_truth": json.dumps(true_fields, ensure_ascii=False),
         "predicted": json.dumps(pred_fields, ensure_ascii=False),
