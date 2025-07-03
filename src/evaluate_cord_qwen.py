@@ -66,8 +66,7 @@ records = []
 total_correct = 0
 total_elements = 0
 
-pbar = tqdm(enumerate(test_set), total=len(test_set), desc="Evaluating", dynamic_ncols=False)
-for idx, sample in pbar:
+for idx, sample in enumerate(tqdm(test_set, total=len(test_set), desc="Evaluating", ncols=0)):
     image = sample["image"]
     label_json = sample["ground_truth"]
 
@@ -127,10 +126,11 @@ for idx, sample in pbar:
     total_elements += total
 
     running_avg = (total_correct / total_elements) if total_elements else 0.0
-    pbar.write(
+    print(
         f"[{idx + 1:04d}] Accuracy: {accuracy:.4f} ({correct}/{total})\n"
         f"Running Avg: {(total_correct / total_elements):.4f} "
-        f"({total_correct}/{total_elements})"
+        f"({total_correct}/{total_elements})\n"
+        f"{'-'*50}"
     )
 print("Finished evaluation...")
 
