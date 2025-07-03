@@ -26,9 +26,12 @@ source /software/easybuild-INTEL_A40/software/Miniforge3/24.1.2-0/etc/profile.d/
 conda activate /home/s06zyelt/dialogue-system-uni-bonn-2025/env
 
 
+
 cd src
 
 pip install -r requirements.txt
+pip install -U langchain-community
+
 
 # Run the evaluation script
 echo "++++++++++++++++++++++START+++++++++++++++++++++++++++++"
