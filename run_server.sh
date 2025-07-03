@@ -6,7 +6,7 @@
 
 
 #cd $SLURM_SUBMIT_DIR
-export OLLAMA_HOST=127.0.0.1:11434
+export OLLAMA_HOST=127.0.0.1:11501
 
 ollama serve &
 sleep 5
