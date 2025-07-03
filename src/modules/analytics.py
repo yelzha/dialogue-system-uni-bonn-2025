@@ -3,31 +3,48 @@
 import pandas as pd
 
 def build_dataframe_from_vectorstore(vectorstore):
-    raw = vectorstore.get()
-    if not raw['metadatas']:
-        return pd.DataFrame(), pd.DataFrame()
+    """Load all documents from Chroma and convert to pandas DataFrames (main, line items)."""
+    docs = vectorstore.similarity_search("", k=1000)  # Load all docs
 
-    df_main = pd.DataFrame(raw['metadatas'])
-    df_main['amount'] = pd.to_numeric(df_main['amount'], errors='coerce')
-    df_main['date'] = pd.to_datetime(df_main['date'], errors='coerce')
-
-    # ---- Extract item-level data ----
+    main_rows = []
     item_rows = []
-    for doc in raw['metadatas']:
-        items = doc.get("items", [])
-        for item in items:
-            item_rows.append({
-                "vendor": doc.get("vendor", ""),
-                "date": doc.get("date", ""),
-                "item": item.get("item", ""),
-                "qty": float(item.get("qty", 1) or 1),
-                "price": float(item.get("price", 0) or 0),
-                "total": float(item.get("total", 0) or 0)
-            })
 
+    for doc in docs:
+        meta = doc.metadata
+        # Attempt to parse 'items' from JSON string to list
+        items = []
+        if isinstance(meta.get("items"), str):
+            try:
+                items = json.loads(meta["items"])
+            except Exception:
+                items = []
+        elif isinstance(meta.get("items"), list):
+            items = meta["items"]
+
+        # Append metadata row
+        main_rows.append({
+            "vendor": meta.get("vendor", ""),
+            "invoice_number": meta.get("invoice_number", ""),
+            "date": meta.get("date", ""),
+            "amount": meta.get("amount", ""),
+            "total": meta.get("total", ""),
+            "text": meta.get("text", "")
+        })
+
+        # Append item rows
+        for item in items:
+            if isinstance(item, dict):
+                item_rows.append({
+                    "vendor": meta.get("vendor", ""),
+                    "date": meta.get("date", ""),
+                    "item": item.get("item", ""),
+                    "qty": item.get("qty", ""),
+                    "price": item.get("price", ""),
+                    "total": item.get("total", "")
+                })
+
+    df_main = pd.DataFrame(main_rows)
     df_items = pd.DataFrame(item_rows)
-    if not df_items.empty:
-        df_items['date'] = pd.to_datetime(df_items['date'], errors='coerce')
 
     return df_main, df_items
 
