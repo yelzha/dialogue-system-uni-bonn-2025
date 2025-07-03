@@ -127,10 +127,10 @@ for idx, sample in enumerate(tqdm(test_set, total=len(test_set), desc="Evaluatin
 
     running_avg = (total_correct / total_elements) if total_elements else 0.0
     print(
-        f"[{idx + 1:04d}] Accuracy: {accuracy:.4f} ({correct}/{total})\n"
-        f"Running Avg: {(total_correct / total_elements):.4f} "
-        f"({total_correct}/{total_elements})\n"
-        f"{'-'*50}"
+        f"[{idx + 1:04d}] Accuracy: {accuracy:.4f} ({correct}/{total})\n",
+        f"Running Avg: {(total_correct / total_elements):.4f} ",
+        f"({total_correct}/{total_elements})\n",
+        f"{'-'*50}", flush=True
     )
 print("Finished evaluation...")
 

@@ -19,5 +19,5 @@ pip install -r requirements.txt
 
 # Run the evaluation script
 echo "++++++++++++++++++++++START+++++++++++++++++++++++++++++"
-python src/evaluate_cord_qwen.py
+python -u src/evaluate_cord_qwen.py
 echo "++++++++++++++++++++++FINISHED++++++++++++++++++++++++++"
