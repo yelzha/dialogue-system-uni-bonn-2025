@@ -129,6 +129,7 @@ with tqdm(enumerate(test_set), total=len(test_set), desc="Evaluating") as pbar:
         running_avg = (total_correct / total_elements) if total_elements else 0.0
         pbar.set_description(f"[{idx + 1:04d}] Accuracy: {accuracy:.4f} ({correct}/{total})")
         pbar.set_postfix(running_avg=f"{running_avg:.4f}", correct=total_correct, total=total_elements)
+        print("\n")
 print("Finished evaluation...")
 
 features = Features({
