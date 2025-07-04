@@ -27,90 +27,139 @@ def get_combined_agent(vectorstore, df_main, df_items) -> AgentExecutor:
             func=lambda q: rag_chain.run(q),
             description="Answers questions about uploaded invoices and checks using retrieved document data"
         ),
-        # TOOLS
+
+        # ANALYTIC TOOLS — CLEAN OUTPUT
         Tool.from_function(
             name="monthly_summary",
-            func=lambda: monthly_summary(df_main).to_string(index=False),
+            func=lambda _: "\n".join(
+                f"{row['month']}: ${row['total']:,.2f}"
+                for _, row in monthly_summary(df_main).iterrows()
+            ),
             description="Returns monthly spending summary"
         ),
         Tool.from_function(
             name="top_vendors",
-            func=lambda: top_vendors(df_main).to_string(index=False),
+            func=lambda _: "\n".join(
+                f"{i + 1}. {row['vendor']} - ${row['total_spent']:,.2f}"
+                for i, row in top_vendors(df_main).iterrows()
+            ),
             description="Returns list of top vendors by total spending"
         ),
         Tool.from_function(
             name="top_items",
-            func=lambda: top_items(df_items).to_string(index=False),
+            func=lambda _: "\n".join(
+                f"{i + 1}. {row['item']}: ${row['total_revenue']:,.2f} from {int(row['total_sold'])} sold"
+                for i, row in top_items(df_items).iterrows()
+            ),
             description="Returns list of top n items by total spending"
         ),
         Tool.from_function(
             name="vendor_invoice_counts",
-            func=lambda: vendor_invoice_counts(df_main).to_string(index=False),
+            func=lambda _: "\n".join(
+                f"{row['vendor']}: {row['invoice_count']} invoices"
+                for _, row in vendor_invoice_counts(df_main).iterrows()
+            ),
             description="Returns vendors sorted by number of invoices"
         ),
         Tool.from_function(
             name="average_invoice_amount",
-            func=lambda: average_invoice_amount(df_main).to_string(index=False),
+            func=lambda _: (
+                f"Average invoice total is ${average_invoice_amount(df_main)['average_total'].iloc[0]:,.2f}"
+                if not average_invoice_amount(df_main).empty else "No data available"
+            ),
             description="Returns the average invoice total"
         ),
         Tool.from_function(
             name="all_vendors",
-            func=lambda: all_vendors(df_main).to_string(index=False),
+            func=lambda _: ", ".join(all_vendors(df_main)["vendors"].tolist()),
             description="Lists all unique vendors"
         ),
         Tool.from_function(
             name="highest_revenue_item",
-            func=lambda: highest_revenue_item(df_items).to_string(index=False),
+            func=lambda _: (
+                f"{highest_revenue_item(df_items)['item'].iloc[0]} generated "
+                f"${highest_revenue_item(df_items)['revenue'].iloc[0]:,.2f} in revenue"
+                if not highest_revenue_item(df_items).empty else "No data available"
+            ),
             description="Returns the item with the highest total revenue"
         ),
         Tool.from_function(
             name="most_frequent_item",
-            func=lambda: most_frequent_item(df_items).to_string(index=False),
+            func=lambda _: (
+                f"{most_frequent_item(df_items)['item'].iloc[0]} was purchased "
+                f"{int(most_frequent_item(df_items)['quantity'].iloc[0])} times"
+                if not most_frequent_item(df_items).empty else "No data available"
+            ),
             description="Returns the most purchased item by quantity"
         ),
         Tool.from_function(
             name="first_transaction_date",
-            func=lambda: first_transaction_date(df_main).to_string(index=False),
+            func=lambda _: (
+                f"The first transaction was on {first_transaction_date(df_main)['first_transaction'].iloc[0].strftime('%Y-%m-%d')}"
+                if not first_transaction_date(df_main).empty else "No data available"
+            ),
             description="Returns the earliest transaction date"
-        )
-    ]
-    tools.extend([
+        ),
+
+        # EXTENDED TOOLS
         Tool.from_function(
             name="total_tax_collected",
-            func=lambda: total_tax_collected(df_main).to_string(index=False),
+            func=lambda _: (
+                f"Total tax collected: ${total_tax_collected(df_main)['tax'].iloc[0]:,.2f}"
+                if not total_tax_collected(df_main).empty else "No data available"
+            ),
             description="Returns the total tax collected across all invoices"
         ),
         Tool.from_function(
             name="total_discount_given",
-            func=lambda: total_discount_given(df_main).to_string(index=False),
+            func=lambda _: (
+                f"Total discounts given: ${total_discount_given(df_main)['discount'].iloc[0]:,.2f}"
+                if not total_discount_given(df_main).empty else "No data available"
+            ),
             description="Returns total discount given across invoices"
         ),
         Tool.from_function(
             name="payment_method_distribution",
-            func=lambda: payment_method_distribution(df_main).to_string(index=False),
+            func=lambda _: "\n".join(
+                f"{row['payment_method']}: {row['count']}"
+                for _, row in payment_method_distribution(df_main).iterrows()
+            ),
             description="Shows the count of each payment method used"
         ),
         Tool.from_function(
             name="currency_usage",
-            func=lambda: currency_usage(df_main).to_string(index=False),
+            func=lambda _: "\n".join(
+                f"{row['currency']}: {row['count']}"
+                for _, row in currency_usage(df_main).iterrows()
+            ),
             description="Displays the frequency of currencies used in invoices"
         ),
         Tool.from_function(
             name="most_common_bank",
-            func=lambda: most_common_bank(df_main).to_string(index=False),
+            func=lambda _: (
+                f"Most commonly used bank: {most_common_bank(df_main)['bank_name'].iloc[0]}"
+                if not most_common_bank(df_main).empty else "No data available"
+            ),
             description="Returns the most frequently used bank name"
         ),
         Tool.from_function(
             name="invoices_missing_due_dates",
-            func=lambda: invoices_missing_due_dates(df_main).to_string(index=False),
+            func=lambda _: (
+                    "\n".join(
+                        f"Invoice #{row['invoice_number']} from {row['vendor']}, dated {row['date']}"
+                        for _, row in invoices_missing_due_dates(df_main).iterrows()
+                    ) or "No invoices are missing due dates."
+            ),
             description="Lists all invoices missing due dates"
         )
-    ])
+    ]
 
-    return initialize_agent(
+    agent = initialize_agent(
         tools=tools,
         llm=llm,
         agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
-        verbose=True,
-        handle_parsing_errors=True
+        handle_parsing_errors=True,
+        verbose=True
     )
+
+    return agent

@@ -87,8 +87,14 @@ A local-first AI agent system to parse, store, search, and analyze invoices and 
 
 3. Start Ollama:
 
-   ollama run qwen2.5vl-3b
-   ollama run llama
+   export OLLAMA_HOST=127.0.0.1:11501
+   ollama serve &
+
+   export OLLAMA_HOST=127.0.0.1:11501
+   ollama run llama3 || true
+
+   export OLLAMA_HOST=127.0.0.1:11501
+   ollama run qwen2.5vl || true
 
 4. Run the Streamlit app:
 

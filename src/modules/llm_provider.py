@@ -15,7 +15,7 @@ class OllamaLLM(LLM):
             "prompt": prompt,
             "stream": False,
             "options": {
-                "max_tokens": 4096
+                "max_tokens": 8192
             }
         }
         response = requests.post(
