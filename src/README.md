@@ -41,12 +41,14 @@ check-ai-agent/
 ├── .gitignore  
 ├── data/  
 ├── docs/  
-├── modules/  
+├── modules/   
+│   ├── agent_tools.py  
+│   ├── analytics.py 
+│   ├── doc_logger.py    
+│   ├── llm_agent.py   
+│   ├── llm_provider.py 
 │   ├── ocr_parser.py  
-│   ├── rag_store.py  
-│   ├── llm_provider.py  
-│   ├── llm_agent.py  
-│   └── analytics.py  
+│   └── rag_store.py 
 └── README.md
 
 ## Usage
