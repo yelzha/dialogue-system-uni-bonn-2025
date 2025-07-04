@@ -21,11 +21,17 @@ with st.sidebar:
     st.subheader("🧹 Admin Tools")
     if st.button("🗑️ Clear Vectorstore"):
         clear_vectorstore(st.session_state.vectorstore)
-        st.session_state.df_main = st.session_state.df_items = None
-        st.session_state.agent = None
-        st.success("All documents have been removed from the vectorstore.")
-        st.session_state.clear()
+
+        # Rebuild empty structures
+        st.session_state.df_main, st.session_state.df_items = build_dataframe_from_vectorstore(st.session_state.vectorstore)
+        st.session_state.agent = get_combined_agent(
+            st.session_state.vectorstore,
+            st.session_state.df_main,
+            st.session_state.df_items
+        )
+        st.success("✅ All documents removed from the vectorstore.")
         st.experimental_rerun()
+
 
 
 # Session-based persistent vectorstore
