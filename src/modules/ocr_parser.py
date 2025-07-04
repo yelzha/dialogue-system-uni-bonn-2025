@@ -118,10 +118,11 @@ def parse_image(image_path):
         response = requests.post(f"{OLLAMA_BASE_URL}/api/generate", json=payload)
         response.raise_for_status()
         result = response.json()["response"]
+
+        print(result) # to see the parsed image
+
         cleaned_result = clean_response(result)
         parsed = json.loads(cleaned_result)
-
-        print(parsed) # to see the parsed image
     except Exception as e:
         print(f"[ERROR] Failed to parse image: {e}")
         parsed = {}
