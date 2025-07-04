@@ -142,3 +142,20 @@ with st.expander("Top Purchased Items"):
         st.dataframe(top_items(df_items))
     else:
         st.info("No item-level data available.")
+
+# 🔍 Raw Data Explorer
+st.header("Raw Data Explorer")
+
+col3, col4 = st.columns(2)
+
+with col3:
+    st.subheader("All Invoices (df_main)")
+    st.dataframe(df_main)
+
+with col4:
+    st.subheader("All Line Items (df_items)")
+    if not df_items.empty:
+        st.dataframe(df_items)
+    else:
+        st.info("No line item data available.")
+
