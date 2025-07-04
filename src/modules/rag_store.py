@@ -5,9 +5,7 @@ from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.vectorstores import Chroma
 from langchain.schema import Document
 from config import CHROMA_DB_DIR
-
-import os
-import time
+import uuid
 
 
 def init_vectorstore():
@@ -95,15 +93,21 @@ def add_doc(vectorstore, parsed_data):
             return v
         return json.dumps(v, ensure_ascii=False)
 
+    # Add unique ID for tracking
+    doc_id = str(uuid.uuid4())
+    fields["id"] = doc_id
+
+    # Safe metadata
     clean_metadata = {k: safe_value(v) for k, v in fields.items()}
 
     # Create Document for vector store
     doc = Document(
         page_content=page_text.strip(),
-        metadata=clean_metadata
+        metadata=clean_metadata,
+        id=doc_id
     )
 
-    vectorstore.add_documents([doc])
+    vectorstore.add_documents([doc], ids=[doc_id])
     vectorstore.persist()
 
 
@@ -112,15 +116,17 @@ def clear_vectorstore(vectorstore):
     Deletes all documents from the current Chroma vectorstore collection.
     """
     try:
-        ids = [doc.metadata["id"] for doc in vectorstore.similarity_search("", k=1000) if "id" in doc.metadata]
+        docs = vectorstore.similarity_search("", k=1000)
+        ids = [doc.metadata.get("id") for doc in docs if "id" in doc.metadata]
         if ids:
             vectorstore._collection.delete(ids=ids)
             vectorstore.persist()
-            print(f"Deleted {len(ids)} documents from collection.")
+            print(f"Cleared {len(ids)} documents from vectorstore.")
         else:
             print("No document IDs found to delete.")
     except Exception as e:
         print(f"Failed to clear vectorstore: {e}")
+
 
 
 
