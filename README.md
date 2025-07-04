@@ -97,7 +97,10 @@ A local-first AI agent system to parse, store, search, and analyze invoices and 
    ollama run qwen2.5vl:3b || true
 
 4. Run the Streamlit app:
-
+   cd dialogue-system-uni-bonn-2025
+   module load Miniforge3
+   conda activate /home/s06zyelt/dialogue-system-uni-bonn-2025/env
+   cd src
    streamlit run app.py
 
 5. On your Windows / Linux
