@@ -37,6 +37,15 @@ instruction = (
     "- document_type: One of: 'invoice', 'receipt', or 'check'\n"
     "- notes: Any extra notes, remarks, or memos\n"
     "\n"
+    "### Important Instructions:\n"
+    "- Normalize all monetary values as plain numbers (e.g., 1234.56), without currency symbols.\n"
+    "- If any field is missing or unclear, set its value to an empty string.\n"
+    "- For tax or discount percentages, calculate final values where possible.\n"
+    "- Do not include any explanation, summary, or additional text outside the JSON."
+    "- If a summary table shows tax/VAT/subtotal/total values, extract them even if they are not labeled explicitly."
+    "- Infer monetary values from tables if they are clearly related to totals (e.g. in summary rows)."
+    "- If VAT and tax are shown separately, keep both; if only one is present, copy the same value to both fields."
+    "- If currency symbols are present (e.g. '$', '€', '£'), infer the currency (e.g., USD, EUR, GBP)."
     "### Output Format:\n"
     "Respond ONLY with a valid JSON object in the following format:\n"
     "{\n"
@@ -68,64 +77,80 @@ instruction = (
     "  \"notes\": string\n"
     "}\n"
     "\n"
-    "### Important Instructions:\n"
-    "- Normalize all monetary values as plain numbers (e.g., 1234.56), without currency symbols.\n"
-    "- If any field is missing or unclear, set its value to an empty string.\n"
-    "- For tax or discount percentages, calculate final values where possible.\n"
-    "- Do not include any explanation, summary, or additional text outside the JSON."
-    "- If a summary table shows tax/VAT/subtotal/total values, extract them even if they are not labeled explicitly."
-    "- Infer monetary values from tables if they are clearly related to totals (e.g. in summary rows)."
-    "- If VAT and tax are shown separately, keep both; if only one is present, copy the same value to both fields."
-    "- If currency symbols are present (e.g. '$', '€', '£'), infer the currency (e.g., USD, EUR, GBP)."
 
 )
 
 
-def clean_response(result):
-    # Remove markdown-style triple backticks
-    cleaned = result.strip()
-    if cleaned.startswith("```json"):
-        cleaned = cleaned[7:]  # remove ```json
-    if cleaned.endswith("```"):
-        cleaned = cleaned[:-3]  # remove ```
-    return cleaned.strip()
-
-
 def image_to_base64(image_path):
-    """Convert an image to base64 string for Ollama."""
-    img = Image.open(image_path).convert("RGB")
-    buffer = BytesIO()
-    img.save(buffer, format="PNG")
-    return base64.b64encode(buffer.getvalue()).decode("utf-8")
+    with open(image_path, "rb") as img_file:
+        return base64.b64encode(img_file.read()).decode("utf-8")
+
+
+def extract_json(text):
+    """Extract JSON code block from markdown-style ```json``` or loose text."""
+    match = re.search(r"```json\s*(\{.*?\})\s*```", text, re.DOTALL)
+    if match:
+        return match.group(1)
+    try:
+        # fallback if no code block wrapper
+        return json.loads(text)
+    except json.JSONDecodeError:
+        return "{}"
+
+
+def normalize_fields(data):
+    """Clean and standardize fields."""
+    # Handle alias mapping
+    if "VAT" in data and not data.get("tax"):
+        data["tax"] = data["VAT"]
+    data.pop("VAT", None)  # remove alias after copy
+
+    # Ensure correct data types
+    for key in ["amount", "subtotal", "tax", "discount", "total"]:
+        if key in data and isinstance(data[key], str):
+            try:
+                # Remove currency symbols or commas
+                cleaned = re.sub(r"[^0-9.\-]", "", data[key])
+                data[key] = float(cleaned) if cleaned else ""
+            except ValueError:
+                data[key] = ""
+
+    # Normalize items (quantities and totals)
+    items = data.get("items", [])
+    for item in items:
+        for field in ["qty", "price", "total"]:
+            if field in item:
+                try:
+                    cleaned = re.sub(r"[^0-9.\-]", "", str(item[field]))
+                    item[field] = float(cleaned) if cleaned else ""
+                except:
+                    item[field] = ""
+    return data
+
 
 def parse_image(image_path):
-    """Call Qwen2.5-VL on Ollama with an image and extract structured fields."""
+    """Send the image to Ollama and return structured, cleaned data."""
     image_b64 = image_to_base64(image_path)
 
     payload = {
         "model": OLLAMA_OCR_MODEL,
         "prompt": instruction,
         "images": [image_b64],
-        "stream": False,
-        "options": {
-            "temperature": 0.0,
-            "top_p": 0.9,
-            "max_tokens": 4096
-        }
+        "stream": False
     }
 
     try:
         response = requests.post(f"{OLLAMA_BASE_URL}/api/generate", json=payload)
         response.raise_for_status()
-        result = response.json()["response"]
-
-        print(result) # to see the parsed image
-
-        cleaned_result = clean_response(result)
-        parsed = json.loads(cleaned_result)
+        raw_output = response.json()["response"]
+        print(raw_output)
+        json_str = extract_json(raw_output)
+        parsed_json = json.loads(json_str)
+        parsed = normalize_fields(parsed_json)
     except Exception as e:
         print(f"[ERROR] Failed to parse image: {e}")
-        parsed = {}
+        return {}
+
 
     # Fallback: build full structure with default values if missing
     fields = {

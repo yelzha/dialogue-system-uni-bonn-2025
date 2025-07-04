@@ -14,8 +14,8 @@ sleep 5
 ollama pull llama3
 ollama run llama3 || true
 
-ollama pull qwen2.5vl:3b
-ollama run qwen2.5vl:3b || true
+ollama pull qwen2.5vl:7b
+ollama run qwen2.5vl:7b || true
 
 
 module load Miniforge3
