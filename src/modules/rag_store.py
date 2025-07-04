@@ -6,6 +6,7 @@ from langchain.vectorstores import Chroma
 from langchain.schema import Document
 from config import CHROMA_DB_DIR
 
+
 def init_vectorstore():
     """
     Initialize or load Chroma vector store using a local embedding model.
@@ -19,6 +20,7 @@ def init_vectorstore():
         embedding_function=embeddings,
         persist_directory=CHROMA_DB_DIR
     )
+
 
 def add_doc(vectorstore, parsed_data):
     """

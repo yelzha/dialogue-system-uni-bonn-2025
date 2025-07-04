@@ -5,6 +5,7 @@ from typing import Optional, List, Mapping, Any
 import requests
 from config import OLLAMA_BASE_URL, OLLAMA_MODEL
 
+
 class OllamaLLM(LLM):
     model: str = OLLAMA_MODEL
     base_url: str = OLLAMA_BASE_URL
@@ -15,7 +16,7 @@ class OllamaLLM(LLM):
             "prompt": prompt,
             "stream": False,
             "options": {
-                "max_tokens": 8192
+                "max_tokens": 4096
             }
         }
         response = requests.post(

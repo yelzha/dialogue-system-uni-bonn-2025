@@ -63,7 +63,7 @@ def parse_image(image_path):
         "options": {
             "temperature": 0.0,
             "top_p": 0.9,
-            "max_tokens": 8192  # You can increase to 4096 if needed
+            "max_tokens": 3072  # You can increase to 4096 if needed
         }
     }
 

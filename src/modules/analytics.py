@@ -50,6 +50,7 @@ def build_dataframe_from_vectorstore(vectorstore):
 
     return df_main, df_items
 
+
 def monthly_summary(df_main):
     if df_main.empty:
         return df_main
@@ -61,6 +62,7 @@ def monthly_summary(df_main):
     df_main["month"] = df_main["date"].dt.to_period("M")
     df_main["total"] = pd.to_numeric(df_main["total"], errors="coerce")
     return df_main.groupby("month")["total"].sum().reset_index()
+
 
 def top_vendors(df_main, n=5):
     if df_main.empty:
@@ -108,6 +110,7 @@ def vendor_invoice_counts(df_main):
         .reset_index()
     )
 
+
 def average_invoice_amount(df_main):
     """Average total per invoice."""
     if df_main.empty:
@@ -117,11 +120,13 @@ def average_invoice_amount(df_main):
     df_main["total"] = pd.to_numeric(df_main["total"], errors="coerce")
     return pd.DataFrame({"average_total": [df_main["total"].mean()]})
 
+
 def all_vendors(df_main):
     """List all unique vendors."""
     if df_main.empty:
         return df_main.copy()
     return pd.DataFrame({"vendors": sorted(df_main["vendor"].dropna().unique())})
+
 
 def highest_revenue_item(df_items):
     """Item that generated the most revenue."""
@@ -138,6 +143,7 @@ def highest_revenue_item(df_items):
         .reset_index()
     )
 
+
 def most_frequent_item(df_items):
     """Most purchased item by quantity."""
     if df_items.empty:
@@ -153,6 +159,7 @@ def most_frequent_item(df_items):
         .reset_index()
     )
 
+
 def first_transaction_date(df_main):
     """Earliest invoice date."""
     if df_main.empty:
@@ -162,6 +169,7 @@ def first_transaction_date(df_main):
     df_main["date"] = pd.to_datetime(df_main["date"], errors="coerce")
     df_main = df_main.dropna(subset=["date"])
     return pd.DataFrame({"first_transaction": [df_main["date"].min()]})
+
 
 def total_tax_collected(df_main):
     """Sum of all tax collected across invoices."""
