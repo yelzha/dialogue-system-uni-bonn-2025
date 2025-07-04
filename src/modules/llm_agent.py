@@ -23,7 +23,7 @@ def get_combined_agent(vectorstore, df_main, df_items) -> AgentExecutor:
 
     tools = [
         # RAG QUERY SYSTEM
-        Tool.from_function(
+        StructuredTool.from_function(
             name="rag_query",
             func=lambda q: rag_chain.run(q),
             description="Answers questions about uploaded invoices and checks using retrieved document data"
@@ -161,6 +161,7 @@ def get_combined_agent(vectorstore, df_main, df_items) -> AgentExecutor:
         agent=AgentType.STRUCTURED_CHAT_ZERO_SHOT_REACT_DESCRIPTION,
         handle_parsing_errors=True,
         verbose=True,
+        max_iterations=5,
         return_intermediate_steps=False
     )
 
