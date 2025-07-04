@@ -112,10 +112,13 @@ def clear_vectorstore(vectorstore):
     Deletes all documents from the current Chroma vectorstore collection.
     """
     try:
-        # Use a valid operator like "$any"
-        vectorstore._collection.delete(where={"$any": []})
-        vectorstore.persist()
-        print("Vectorstore cleared.")
+        ids = [doc.metadata["id"] for doc in vectorstore.similarity_search("", k=1000) if "id" in doc.metadata]
+        if ids:
+            vectorstore._collection.delete(ids=ids)
+            vectorstore.persist()
+            print(f"Deleted {len(ids)} documents from collection.")
+        else:
+            print("No document IDs found to delete.")
     except Exception as e:
         print(f"Failed to clear vectorstore: {e}")
 
