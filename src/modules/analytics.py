@@ -69,11 +69,11 @@ def top_vendors(df_main, n=5):
         return df_main.copy()
 
     df_main = df_main.copy()
-    df_main["amount"] = pd.to_numeric(df_main["amount"], errors="coerce")
+    df_main["total"] = pd.to_numeric(df_main["total"], errors="coerce")
 
     return (
         df_main.groupby("vendor")
-        .agg(total_spent=("amount", "sum"))
+        .agg(total_spent=("total", "sum"))
         .sort_values(by="total_spent", ascending=False)
         .head(n)
         .reset_index()
