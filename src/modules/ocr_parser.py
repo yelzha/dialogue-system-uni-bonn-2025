@@ -3,46 +3,92 @@ import json
 import requests
 from PIL import Image
 from io import BytesIO
+import re
 from config import OLLAMA_BASE_URL, OLLAMA_OCR_MODEL
 
-# Instruction prompt, adapted from original
+# Instruction prompt for structured invoice/receipt extraction
 instruction = (
-    "Extract and return all structured fields from this receipt or invoice image in the following JSON format:\n"
+    "You are given a scanned or photographed image of a receipt, invoice, or check.\n"
+    "Your task is to extract structured data from the image and return it in a strict JSON format.\n"
+    "\n"
+    "### Field Descriptions:\n"
+    "- invoice_number: Invoice No., Bill No., Ref No.\n"
+    "- check_number: Check No., Cheque ID\n"
+    "- po_number: PO No., Purchase Order, Order Ref\n"
+    "- vendor: The seller's company or individual name\n"
+    "- vendor_address: Full postal address of the vendor\n"
+    "- customer_name: The buyer’s name or organization\n"
+    "- customer_address: Shipping or billing address of the customer\n"
+    "- date: The invoice or receipt issue date\n"
+    "- due_date: Payment due date, if present\n"
+    "- payment_date: Actual payment date, if available\n"
+    "- amount: Total value before tax or discount\n"
+    "- subtotal: Pre-tax subtotal (sometimes just labeled as 'Amount')\n"
+    "- tax: Total tax amount (VAT, GST, Sales Tax, etc.)\n"
+    "- VAT: Value-added tax amount, if specified\n"
+    "- discount: Any discount, rebate, or promo; convert percent to absolute if needed\n"
+    "- total: Final total payable amount\n"
+    "- currency: Currency code (e.g., USD, EUR, GBP, JPY); infer from symbol if needed\n"
+    "- payment_method: Credit card, bank transfer, PayPal, cash, etc.\n"
+    "- account_number: Bank account or payment account number if present\n"
+    "- routing_number: Routing/IBAN/SWIFT number if present\n"
+    "- bank_name: Bank name if mentioned\n"
+    "- items: List of purchased items or services with quantity, price, and total\n"
+    "- document_type: One of: 'invoice', 'receipt', or 'check'\n"
+    "- notes: Any extra notes, remarks, or memos\n"
+    "\n"
+    "### Output Format:\n"
+    "Respond ONLY with a valid JSON object in the following format:\n"
     "{\n"
-    "  \"invoice_number\": string,                 # Also known as Invoice No., Bill No., Ref No.\n"
-    "  \"check_number\": string,                   # Can appear as Check No., Cheque ID\n"
-    "  \"po_number\": string,                      # May appear as PO No., Purchase Order, Order Ref\n"
-    "  \"vendor\": string,                         # The seller’s company name or individual name\n"
-    "  \"vendor_address\": string,                 # The full address of the vendor\n"
-    "  \"customer_name\": string,                  # The buyer’s name or organization\n"
-    "  \"customer_address\": string,               # Address of the buyer or shipping address\n"
-    "  \"date\": string,                           # Invoice date; can appear as Issue Date, Billing Date\n"
-    "  \"due_date\": string,                       # Payment deadline; may appear as Due On, Payable By\n"
-    "  \"payment_date\": string,                   # Actual payment date if present\n"
-    "  \"amount\": string,                         # The amount before tax and discount\n"
-    "  \"subtotal\": string,                       # The intermediate total (before tax/discount); sometimes labeled as 'Amount'\n"
-    "  \"tax\": string,                            # Total tax applied. May be called VAT, GST, Sales Tax. Sometimes shown as percentage (e.g. 10%) — in that case, convert to final tax amount if possible\n"
-    "  \"VAT\": string,                            # Total tax applied. May be called VAT, GST, Sales Tax. \n"
-    "  \"discount\": string,                       # Discount amount, possibly labeled as Rebate, Promo, or shown as percentage — convert to final amount if possible\n"
-    "  \"total\": string,                          # Final payable amount. Can be called Total Due, Grand Total, Amount Payable\n"
-    "  \"currency\": string,                       # Currency used (e.g. USD, EUR, GBP, ¥, etc.) — infer from symbols if not explicitly stated\n"
-    "  \"payment_method\": string,                 # e.g. Credit Card, Wire Transfer, PayPal, Bank Transfer, Cash\n"
-    "  \"account_number\": string,                 # If shown, extract the bank account or payment account number\n"
-    "  \"routing_number\": string,                 # Bank routing/IBAN/SWIFT if available\n"
-    "  \"bank_name\": string,                      # Bank institution name, if mentioned\n"
-    "  \"items\": [                                # Line items: list of purchased products or services\n"
+    "  \"invoice_number\": string,\n"
+    "  \"check_number\": string,\n"
+    "  \"po_number\": string,\n"
+    "  \"vendor\": string,\n"
+    "  \"vendor_address\": string,\n"
+    "  \"customer_name\": string,\n"
+    "  \"customer_address\": string,\n"
+    "  \"date\": string,\n"
+    "  \"due_date\": string,\n"
+    "  \"payment_date\": string,\n"
+    "  \"amount\": string,\n"
+    "  \"subtotal\": string,\n"
+    "  \"tax\": string,\n"
+    "  \"VAT\": string,\n"
+    "  \"discount\": string,\n"
+    "  \"total\": string,\n"
+    "  \"currency\": string,\n"
+    "  \"payment_method\": string,\n"
+    "  \"account_number\": string,\n"
+    "  \"routing_number\": string,\n"
+    "  \"bank_name\": string,\n"
+    "  \"items\": [\n"
     "    {\"item\": string, \"qty\": string, \"price\": string, \"total\": string}\n"
     "  ],\n"
-    "  \"document_type\": string,                  # Either 'invoice', 'receipt', or 'check' — infer based on content\n"
-    "  \"notes\": string                           # Any additional remarks, memos, or footnotes\n"
+    "  \"document_type\": string,\n"
+    "  \"notes\": string\n"
     "}\n"
     "\n"
-    "Important:\n"
-    "- Normalize all monetary values as plain numbers, without currency symbols.\n"
-    "- If multiple tax or discount fields are present, sum them into one value where applicable.\n"
-    "- If any field is not present or unclear, set it to an empty string.\n"
-    "- Your response must contain only the final JSON — no extra explanation or text."
+    "### Important Instructions:\n"
+    "- Normalize all monetary values as plain numbers (e.g., 1234.56), without currency symbols.\n"
+    "- If any field is missing or unclear, set its value to an empty string.\n"
+    "- For tax or discount percentages, calculate final values where possible.\n"
+    "- Do not include any explanation, summary, or additional text outside the JSON."
+    "- If a summary table shows tax/VAT/subtotal/total values, extract them even if they are not labeled explicitly."
+    "- Infer monetary values from tables if they are clearly related to totals (e.g. in summary rows)."
+    "- If VAT and tax are shown separately, keep both; if only one is present, copy the same value to both fields."
+    "- If currency symbols are present (e.g. '$', '€', '£'), infer the currency (e.g., USD, EUR, GBP)."
+
 )
+
+
+def clean_response(result):
+    # Remove markdown-style triple backticks
+    cleaned = result.strip()
+    if cleaned.startswith("```json"):
+        cleaned = cleaned[7:]  # remove ```json
+    if cleaned.endswith("```"):
+        cleaned = cleaned[:-3]  # remove ```
+    return cleaned.strip()
 
 
 def image_to_base64(image_path):
@@ -72,7 +118,8 @@ def parse_image(image_path):
         response = requests.post(f"{OLLAMA_BASE_URL}/api/generate", json=payload)
         response.raise_for_status()
         result = response.json()["response"]
-        parsed = json.loads(result)
+        cleaned_result = clean_response(result)
+        parsed = json.loads(cleaned_result)
 
         print(parsed) # to see the parsed image
     except Exception as e:

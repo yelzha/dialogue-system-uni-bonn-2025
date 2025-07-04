@@ -3,7 +3,7 @@
 import streamlit as st
 import os
 from modules.ocr_parser import parse_image
-from modules.rag_store import init_vectorstore, add_doc
+from modules.rag_store import init_vectorstore, add_doc, clear_vectorstore
 from modules.analytics import (
     build_dataframe_from_vectorstore,
     monthly_summary,
@@ -20,8 +20,10 @@ st.title("AI Agent: Check / Invoice Analyzer")
 with st.sidebar:
     st.subheader("🧹 Admin Tools")
     if st.button("🗑️ Clear Vectorstore"):
-        from modules.rag_store import clear_vectorstore  # You'll define this
-        clear_vectorstore()  # Custom logic to delete/reset Chroma data
+        clear_vectorstore(st.session_state.vectorstore)
+        st.session_state.df_main = st.session_state.df_items = None
+        st.session_state.agent = None
+        st.success("All documents have been removed from the vectorstore.")
         st.session_state.clear()
         st.experimental_rerun()
 
