@@ -18,19 +18,22 @@ st.title("AI Agent: Check / Invoice Analyzer")
 
 # Vectorstore Cleaner Button
 with st.sidebar:
-    st.subheader("🧹 Admin Tools")
-    if st.button("🗑️ Clear Vectorstore"):
+    st.subheader("Admin Tools")
+    if st.button("Clear Vectorstore"):
         clear_vectorstore(st.session_state.vectorstore)
 
-        # Rebuild empty structures
+        # Reset session data
         st.session_state.df_main, st.session_state.df_items = build_dataframe_from_vectorstore(st.session_state.vectorstore)
         st.session_state.agent = get_combined_agent(
             st.session_state.vectorstore,
             st.session_state.df_main,
             st.session_state.df_items
         )
-        st.success("✅ All documents removed from the vectorstore.")
-        st.experimental_rerun()
+
+        st.success("All documents removed from the vectorstore.")
+        st.rerun()  # <- updated API
+
+
 
 
 
