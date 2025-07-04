@@ -123,7 +123,7 @@ def clear_vectorstore(vectorstore):
             vectorstore.delete(ids=all_ids)
             print("All documents deleted by ID.")
         else:
-            print("No documents found to delete."
+            print("No documents found to delete.")
     except Exception as e:
         print(f"Failed to clear vectorstore: {e}")
 
