@@ -109,14 +109,14 @@ def add_doc(vectorstore, parsed_data):
 
 def clear_vectorstore(vectorstore):
     """
-    Safely deletes all records from the Chroma vectorstore in memory.
-    This avoids filesystem locking issues by keeping the DB connection open.
+    Deletes all documents from the current Chroma vectorstore collection.
     """
     try:
-        vectorstore._collection.delete(where={})  # Remove all documents
-        vectorstore.persist()  # Commit changes
-        print("Vectorstore cleared.")
+        collection = vectorstore._collection
+        collection.delete(where={})  # Clear all documents
+        vectorstore.persist()        # Persist the empty state
+        print("[INFO] Vectorstore cleared.")
     except Exception as e:
-        print(f"Failed to clear vectorstore: {e}")
+        print(f"[ERROR] Failed to clear vectorstore: {e}")
 
 
