@@ -112,11 +112,12 @@ def clear_vectorstore(vectorstore):
     Deletes all documents from the current Chroma vectorstore collection.
     """
     try:
-        collection = vectorstore._collection
-        collection.delete(where={})  # Clear all documents
-        vectorstore.persist()        # Persist the empty state
-        print("[INFO] Vectorstore cleared.")
+        # Use a valid operator like "$any"
+        vectorstore._collection.delete(where={"$any": []})
+        vectorstore.persist()
+        print("Vectorstore cleared.")
     except Exception as e:
-        print(f"[ERROR] Failed to clear vectorstore: {e}")
+        print(f"Failed to clear vectorstore: {e}")
+
 
 
