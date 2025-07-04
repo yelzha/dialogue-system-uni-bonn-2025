@@ -10,9 +10,17 @@ class OllamaLLM(LLM):
     base_url: str = OLLAMA_BASE_URL
 
     def _call(self, prompt: str, stop: Optional[List[str]] = None) -> str:
+        payload = {
+            "model": self.model,
+            "prompt": prompt,
+            "stream": False,
+            "options": {
+                "max_tokens": 4096
+            }
+        }
         response = requests.post(
             f"{self.base_url}/api/generate",
-            json={"model": self.model, "prompt": prompt, "stream": False}
+            json=payload
         )
         response.raise_for_status()
         return response.json()["response"].strip()
