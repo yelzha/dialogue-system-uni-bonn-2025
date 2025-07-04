@@ -7,7 +7,7 @@ from langchain.schema import Document
 from config import CHROMA_DB_DIR
 
 import os
-import shutil
+import time
 
 
 def init_vectorstore():
@@ -107,8 +107,6 @@ def add_doc(vectorstore, parsed_data):
     vectorstore.persist()
 
 
-def clear_vectorstore():
-    """Completely deletes the Chroma DB folder (hard reset)."""
-    if os.path.exists(CHROMA_DB_DIR):
-        shutil.rmtree(CHROMA_DB_DIR)
-    os.makedirs(CHROMA_DB_DIR, exist_ok=True)
+def clear_vectorstore_in_memory(vectorstore):
+    vectorstore._collection.delete(where={})
+    vectorstore.persist()
