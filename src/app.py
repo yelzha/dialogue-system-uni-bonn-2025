@@ -16,6 +16,16 @@ from modules.llm_agent import get_combined_agent
 st.set_page_config(page_title="Check & Invoice AI", layout="wide")
 st.title("AI Agent: Check / Invoice Analyzer")
 
+# Vectorstore Cleaner Button
+with st.sidebar:
+    st.subheader("🧹 Admin Tools")
+    if st.button("🗑️ Clear Vectorstore"):
+        from modules.rag_store import clear_vectorstore  # You'll define this
+        clear_vectorstore()  # Custom logic to delete/reset Chroma data
+        st.session_state.clear()
+        st.experimental_rerun()
+
+
 # Session-based persistent vectorstore
 if "vectorstore" not in st.session_state:
     st.session_state.vectorstore = init_vectorstore()
@@ -23,6 +33,7 @@ if "vectorstore" not in st.session_state:
 # Upload Section
 st.header("Upload a Check / Invoice Image")
 uploaded_file = st.file_uploader("Choose an image", type=["jpg", "jpeg", "png"])
+
 
 if uploaded_file:
     file_path = os.path.join("docs", uploaded_file.name)

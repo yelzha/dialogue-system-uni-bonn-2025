@@ -22,6 +22,7 @@ instruction = (
     "  \"amount\": string,                         # The amount before tax and discount\n"
     "  \"subtotal\": string,                       # The intermediate total (before tax/discount); sometimes labeled as 'Amount'\n"
     "  \"tax\": string,                            # Total tax applied. May be called VAT, GST, Sales Tax. Sometimes shown as percentage (e.g. 10%) — in that case, convert to final tax amount if possible\n"
+    "  \"VAT\": string,                            # Total tax applied. May be called VAT, GST, Sales Tax. \n"
     "  \"discount\": string,                       # Discount amount, possibly labeled as Rebate, Promo, or shown as percentage — convert to final amount if possible\n"
     "  \"total\": string,                          # Final payable amount. Can be called Total Due, Grand Total, Amount Payable\n"
     "  \"currency\": string,                       # Currency used (e.g. USD, EUR, GBP, ¥, etc.) — infer from symbols if not explicitly stated\n"
@@ -72,6 +73,8 @@ def parse_image(image_path):
         response.raise_for_status()
         result = response.json()["response"]
         parsed = json.loads(result)
+
+        print(parsed) # to see the parsed image
     except Exception as e:
         print(f"[ERROR] Failed to parse image: {e}")
         parsed = {}

@@ -157,9 +157,10 @@ def get_combined_agent(vectorstore, df_main, df_items) -> AgentExecutor:
     agent = initialize_agent(
         tools=tools,
         llm=llm,
-        agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+        agent=AgentType.STRUCTURED_CHAT_ZERO_SHOT_REACT_DESCRIPTION,
         handle_parsing_errors=True,
-        verbose=True
+        verbose=True,
+        return_intermediate_steps=False
     )
 
     return agent
