@@ -29,6 +29,7 @@ A local-first AI agent system to parse, store, search, and analyze invoices and 
 #### Retrieval and LLM Integration
 - [x] Enable Retrieval-Augmented Generation (RAG) with LangChain
 - [x] Use LLaMA/Qwen/Mistral via Ollama for question answering
+- [x] Possibility to call Tools
 
 ---
 
@@ -39,8 +40,8 @@ A local-first AI agent system to parse, store, search, and analyze invoices and 
 - [x] Extract line item totals and vendor grouping
 
 #### Export and Filtering
-- [ ] Metadata filtering by vendor/date/category (optional)
-- [ ] Export data to CSV/Excel (optional)
+- [x] Metadata filtering by vendor/date/category (optional)
+- [x] Export data to CSV/Excel (optional)
 
 ---
 
@@ -52,11 +53,7 @@ A local-first AI agent system to parse, store, search, and analyze invoices and 
 
 ---
 
-### Phase 5: Extensibility and Deployment
-
-#### OCR Fallback and Advanced Formats
-- [ ] PaddleOCR fallback if vision model fails (optional)
-- [ ] PDF support and table extraction (optional)
+### Phase 5: Deployment (optional)
 
 #### Deployment
 - [ ] Docker containerization (optional)
