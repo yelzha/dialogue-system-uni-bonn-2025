@@ -1,9 +1,9 @@
 #!/bin/bash
-#SBATCH --partition=A40short
+#SBATCH --partition=A40devel
 #SBATCH --time=07:59:59
 #SBATCH --gpus=1
 #SBATCH --ntasks=1
-#SBATCH --mem-per-gpu=40G
+#SBATCH --mem=20G
 
 
 #cd $SLURM_SUBMIT_DIR
