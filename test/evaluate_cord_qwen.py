@@ -114,7 +114,7 @@ for idx, sample in enumerate(tqdm(test_set, total=len(test_set), desc="Evaluatin
 
     records.append({
         "id": idx,
-        "image": image,
+        # "image": image,
         "ground_truth": json.dumps(true_fields, ensure_ascii=False),
         "predicted": json.dumps(pred_fields, ensure_ascii=False),
         "raw": raw_result,
@@ -137,7 +137,7 @@ print("Finished evaluation...")
 
 features = Features({
     "id": Value("int32"),
-    "image": Image(decode=True, id=None),
+    # "image": Image(decode=True, id=None),
     "ground_truth": Value("string", id=None),
     "predicted": Value("string", id=None),
     "raw": Value("string", id=None),
