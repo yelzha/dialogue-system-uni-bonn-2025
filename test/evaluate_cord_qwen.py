@@ -51,7 +51,7 @@ instruction = (
 )
 
 print("Starting loading model...")
-model_id = "Qwen/Qwen2.5-VL-3B-Instruct"
+model_id = "Qwen/Qwen2.5-VL-7B-Instruct"
 model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
     model_id, torch_dtype="auto", device_map="auto"
 )
@@ -97,11 +97,11 @@ for idx, sample in enumerate(tqdm(test_set, total=len(test_set), desc="Evaluatin
     generated_ids_trimmed = [
         out_ids[len(in_ids):] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
     ]
-    pred_result = processor.batch_decode(
+    raw_result = processor.batch_decode(
         generated_ids_trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False
     )[0]
 
-    pred_result = clean_output(pred_result)
+    pred_result = clean_output(raw_result)
 
     try:
         pred_fields = extract_fields(json.dumps({"gt_parse": json.loads(pred_result)}))
@@ -117,6 +117,7 @@ for idx, sample in enumerate(tqdm(test_set, total=len(test_set), desc="Evaluatin
         "image": image,
         "ground_truth": json.dumps(true_fields, ensure_ascii=False),
         "predicted": json.dumps(pred_fields, ensure_ascii=False),
+        "raw": raw_result,
         "accuracy": float(accuracy),
         "correct": int(correct),
         "total": int(total)
@@ -139,12 +140,13 @@ features = Features({
     "image": Image(decode=True, id=None),
     "ground_truth": Value("string", id=None),
     "predicted": Value("string", id=None),
+    "raw": Value("string", id=None),
     "accuracy": Value("float32", id=None),
     "correct": Value("int32", id=None),
     "total": Value("int32", id=None)
 })
 pred_dataset = Dataset.from_list(records, features=features)
-pred_dataset.save_to_disk("datasets/cord_v2_qwen2.5-vl-3b")
+pred_dataset.save_to_disk("datasets/cord_v2_qwen2.5-vl-7b")
 
 # from datasets import load_from_disk
 # ds = load_from_disk("datasets/cord_v2_qwen2.5-vl-3b")
