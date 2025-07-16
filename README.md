@@ -56,8 +56,8 @@ A local-first AI agent system to parse, store, search, and analyze invoices and 
 ### Phase 5: Deployment (optional)
 
 #### Deployment
-- [ ] Docker containerization (optional)
-- [ ] CLI interface for headless execution (optional)
+- [x] Bender Server deployment
+- [x] CLI interface for headless execution (optional)
 
 ---
 
@@ -158,6 +158,17 @@ check-ai-agent/
 #!/bin/bash
 =========initialization start=========
 ======================================
+mkdir -p ~/ollama/bin
+curl -L https://ollama.com/download/ollama-linux-amd64.tgz -o ollama-linux-amd64.tgz
+tar -xzf ollama-linux-amd64.tgz -C ~/ollama
+echo 'export PATH="$HOME/ollama/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+ollama --version
+
+
+
+# project part
+cd dialogue-system-uni-bonn-2025
 mkdir -p datasets
 curl -L -o datasets/high-quality-invoice-images-for-ocr.zip https://www.kaggle.com/api/v1/datasets/download/osamahosamabdellatif/high-quality-invoice-images-for-ocr
 
