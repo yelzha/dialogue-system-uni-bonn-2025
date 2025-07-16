@@ -74,14 +74,14 @@ A local-first AI agent system to parse, store, search, and analyze invoices and 
 ### Setup Instructions
 
 1. Clone repository:
-
+```
    git clone https://github.com/yelzha/dialogue-system-uni-bonn-2025.git  
    cd dialogue-system-uni-bonn-2025/src
-
+```
 2. Install dependencies:
-
+```
    pip install -r requirements.txt
-
+```
 3. Start Ollama:
 ```
    export OLLAMA_HOST=127.0.0.1:11501
@@ -96,16 +96,17 @@ A local-first AI agent system to parse, store, search, and analyze invoices and 
    ollama run qwen2.5vl:7b || true
 ```
 4. Run the Streamlit app:
+```
    cd dialogue-system-uni-bonn-2025
    module load Miniforge3
    conda activate /home/s06zyelt/dialogue-system-uni-bonn-2025/env
    cd src
    streamlit run app.py
-
-5. On your Windows / Linux
-
+```
+6. On your Windows / Linux to publish it for your local computer
+```
    ssh -L 8501:localhost:8501 your-username@host-address.de
-
+```
 ## Folder Structure
 
 check-ai-agent/  
