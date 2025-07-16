@@ -83,16 +83,18 @@ A local-first AI agent system to parse, store, search, and analyze invoices and 
    pip install -r requirements.txt
 
 3. Start Ollama:
-
+```
    export OLLAMA_HOST=127.0.0.1:11501
    ollama serve &
-
+```
+```
    export OLLAMA_HOST=127.0.0.1:11501
    ollama run llama3 || true
-
+```
+```
    export OLLAMA_HOST=127.0.0.1:11501
    ollama run qwen2.5vl:7b || true
-
+```
 4. Run the Streamlit app:
    cd dialogue-system-uni-bonn-2025
    module load Miniforge3
