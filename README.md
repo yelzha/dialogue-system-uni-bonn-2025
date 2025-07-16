@@ -108,23 +108,36 @@ A local-first AI agent system to parse, store, search, and analyze invoices and 
    ssh -L 8501:localhost:8501 your-username@host-address.de
 ```
 ## Folder Structure
+dialogue-system-uni-bonn-2025
+├── dataset/
+├── notebooks/
+├── test/
+├── init.sh
+├── ollama_test.py
+├── README.md
+├── requirements.txt
+├── requirements_notebooks.txt
+├── run_code.sh
+├── run_eval_cord_qwen.sh
+├── run_server.sh
+├── run_test.sh
+└── src/
+    ├── app.py
+    ├── config.py
+    ├── requirements.txt
+    ├── .gitignore
+    ├── data/
+    ├── docs/
+    ├── modules/
+    │   ├── agent_tools.py
+    │   ├── analytics.py
+    │   ├── doc_logger.py
+    │   ├── llm_agent.py
+    │   ├── llm_provider.py
+    │   ├── ocr_parser.py
+    │   └── rag_store.py
+    └── README.md
 
-check-ai-agent/  
-├── app.py  
-├── config.py  
-├── requirements.txt  
-├── .gitignore  
-├── data/  
-├── docs/  
-├── modules/   
-│   ├── agent_tools.py  
-│   ├── analytics.py 
-│   ├── doc_logger.py    
-│   ├── llm_agent.py   
-│   ├── llm_provider.py 
-│   ├── ocr_parser.py  
-│   └── rag_store.py 
-└── README.md
 
 ## Usage
 
