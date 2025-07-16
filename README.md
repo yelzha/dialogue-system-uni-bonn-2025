@@ -1,6 +1,10 @@
 # No More Manual Invoices! (OCR + RAG + LLM via Ollama)
 # Team #botz
 
+# Demo: https://youtu.be/qRcjYFw-9MU
+<img width="500" height="500" alt="adobe-express-qr-code (3)" src="https://github.com/user-attachments/assets/238befe8-1442-4985-b450-ed0202451c0c" />
+
+
 A local-first AI agent system to parse, store, search, and analyze invoices and checks using OCR, vector databases, and local large language models via Ollama.
 
 ---
