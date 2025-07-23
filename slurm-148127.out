@@ -1,0 +1,573 @@
+Defaulting to user installation because normal site-packages is not writeable
+WARNING: Ignoring invalid distribution -orch (/home/s06zyelt/.local/lib/python3.10/site-packages)
+WARNING: Ignoring invalid distribution -orch (/home/s06zyelt/.local/lib/python3.10/site-packages)
+Requirement already satisfied: streamlit in /home/s06zyelt/.local/lib/python3.10/site-packages (from -r requirements.txt (line 2)) (1.46.1)
+Requirement already satisfied: pandas in /home/s06zyelt/.local/lib/python3.10/site-packages (from -r requirements.txt (line 3)) (2.3.0)
+Requirement already satisfied: tqdm in /home/s06zyelt/.local/lib/python3.10/site-packages (from -r requirements.txt (line 4)) (4.67.1)
+Requirement already satisfied: requests in /home/s06zyelt/.local/lib/python3.10/site-packages (from -r requirements.txt (line 5)) (2.32.4)
+Requirement already satisfied: Pillow in /home/s06zyelt/.local/lib/python3.10/site-packages (from -r requirements.txt (line 6)) (11.0.0)
+Requirement already satisfied: langchain in /home/s06zyelt/.local/lib/python3.10/site-packages (from -r requirements.txt (line 9)) (0.3.26)
+Requirement already satisfied: chromadb in /home/s06zyelt/.local/lib/python3.10/site-packages (from -r requirements.txt (line 10)) (1.0.15)
+Requirement already satisfied: sentence-transformers in /home/s06zyelt/.local/lib/python3.10/site-packages (from -r requirements.txt (line 13)) (5.0.0)
+Requirement already satisfied: datasets in /home/s06zyelt/.local/lib/python3.10/site-packages (from -r requirements.txt (line 16)) (3.6.0)
+Requirement already satisfied: altair<6,>=4.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from streamlit->-r requirements.txt (line 2)) (5.5.0)
+Requirement already satisfied: blinker<2,>=1.5.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from streamlit->-r requirements.txt (line 2)) (1.9.0)
+Requirement already satisfied: cachetools<7,>=4.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from streamlit->-r requirements.txt (line 2)) (5.5.2)
+Requirement already satisfied: click<9,>=7.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from streamlit->-r requirements.txt (line 2)) (8.2.1)
+Requirement already satisfied: numpy<3,>=1.23 in /home/s06zyelt/.local/lib/python3.10/site-packages (from streamlit->-r requirements.txt (line 2)) (1.26.4)
+Requirement already satisfied: packaging<26,>=20 in /software/easybuild-INTEL_A40/software/Miniforge3/24.1.2-0/lib/python3.10/site-packages (from streamlit->-r requirements.txt (line 2)) (24.0)
+Requirement already satisfied: protobuf<7,>=3.20 in /home/s06zyelt/.local/lib/python3.10/site-packages (from streamlit->-r requirements.txt (line 2)) (6.31.1)
+Requirement already satisfied: pyarrow>=7.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from streamlit->-r requirements.txt (line 2)) (20.0.0)
+Requirement already satisfied: tenacity<10,>=8.1.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from streamlit->-r requirements.txt (line 2)) (9.1.2)
+Requirement already satisfied: toml<2,>=0.10.1 in /home/s06zyelt/.local/lib/python3.10/site-packages (from streamlit->-r requirements.txt (line 2)) (0.10.2)
+Requirement already satisfied: typing-extensions<5,>=4.4.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from streamlit->-r requirements.txt (line 2)) (4.14.0)
+Requirement already satisfied: watchdog<7,>=2.1.5 in /home/s06zyelt/.local/lib/python3.10/site-packages (from streamlit->-r requirements.txt (line 2)) (6.0.0)
+Requirement already satisfied: gitpython!=3.1.19,<4,>=3.0.7 in /home/s06zyelt/.local/lib/python3.10/site-packages (from streamlit->-r requirements.txt (line 2)) (3.1.44)
+Requirement already satisfied: pydeck<1,>=0.8.0b4 in /home/s06zyelt/.local/lib/python3.10/site-packages (from streamlit->-r requirements.txt (line 2)) (0.9.1)
+Requirement already satisfied: tornado!=6.5.0,<7,>=6.0.3 in /home/s06zyelt/.local/lib/python3.10/site-packages (from streamlit->-r requirements.txt (line 2)) (6.5.1)
+Requirement already satisfied: python-dateutil>=2.8.2 in /home/s06zyelt/.local/lib/python3.10/site-packages (from pandas->-r requirements.txt (line 3)) (2.9.0.post0)
+Requirement already satisfied: pytz>=2020.1 in /home/s06zyelt/.local/lib/python3.10/site-packages (from pandas->-r requirements.txt (line 3)) (2025.2)
+Requirement already satisfied: tzdata>=2022.7 in /home/s06zyelt/.local/lib/python3.10/site-packages (from pandas->-r requirements.txt (line 3)) (2025.2)
+Requirement already satisfied: charset_normalizer<4,>=2 in /software/easybuild-INTEL_A40/software/Miniforge3/24.1.2-0/lib/python3.10/site-packages (from requests->-r requirements.txt (line 5)) (3.3.2)
+Requirement already satisfied: idna<4,>=2.5 in /software/easybuild-INTEL_A40/software/Miniforge3/24.1.2-0/lib/python3.10/site-packages (from requests->-r requirements.txt (line 5)) (3.6)
+Requirement already satisfied: urllib3<3,>=1.21.1 in /software/easybuild-INTEL_A40/software/Miniforge3/24.1.2-0/lib/python3.10/site-packages (from requests->-r requirements.txt (line 5)) (2.2.1)
+Requirement already satisfied: certifi>=2017.4.17 in /software/easybuild-INTEL_A40/software/Miniforge3/24.1.2-0/lib/python3.10/site-packages (from requests->-r requirements.txt (line 5)) (2024.8.30)
+Requirement already satisfied: langchain-core<1.0.0,>=0.3.66 in /home/s06zyelt/.local/lib/python3.10/site-packages (from langchain->-r requirements.txt (line 9)) (0.3.67)
+Requirement already satisfied: langchain-text-splitters<1.0.0,>=0.3.8 in /home/s06zyelt/.local/lib/python3.10/site-packages (from langchain->-r requirements.txt (line 9)) (0.3.8)
+Requirement already satisfied: langsmith>=0.1.17 in /home/s06zyelt/.local/lib/python3.10/site-packages (from langchain->-r requirements.txt (line 9)) (0.4.4)
+Requirement already satisfied: pydantic<3.0.0,>=2.7.4 in /home/s06zyelt/.local/lib/python3.10/site-packages (from langchain->-r requirements.txt (line 9)) (2.11.7)
+Requirement already satisfied: SQLAlchemy<3,>=1.4 in /home/s06zyelt/.local/lib/python3.10/site-packages (from langchain->-r requirements.txt (line 9)) (2.0.41)
+Requirement already satisfied: PyYAML>=5.3 in /home/s06zyelt/.local/lib/python3.10/site-packages (from langchain->-r requirements.txt (line 9)) (6.0.2)
+Requirement already satisfied: async-timeout<5.0.0,>=4.0.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from langchain->-r requirements.txt (line 9)) (4.0.3)
+Requirement already satisfied: build>=1.0.3 in /home/s06zyelt/.local/lib/python3.10/site-packages (from chromadb->-r requirements.txt (line 10)) (1.2.2.post1)
+Requirement already satisfied: pybase64>=1.4.1 in /home/s06zyelt/.local/lib/python3.10/site-packages (from chromadb->-r requirements.txt (line 10)) (1.4.1)
+Requirement already satisfied: uvicorn>=0.18.3 in /home/s06zyelt/.local/lib/python3.10/site-packages (from uvicorn[standard]>=0.18.3->chromadb->-r requirements.txt (line 10)) (0.35.0)
+Requirement already satisfied: posthog<6.0.0,>=2.4.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from chromadb->-r requirements.txt (line 10)) (5.4.0)
+Requirement already satisfied: onnxruntime>=1.14.1 in /home/s06zyelt/.local/lib/python3.10/site-packages (from chromadb->-r requirements.txt (line 10)) (1.22.0)
+Requirement already satisfied: opentelemetry-api>=1.2.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from chromadb->-r requirements.txt (line 10)) (1.35.0)
+Requirement already satisfied: opentelemetry-exporter-otlp-proto-grpc>=1.2.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from chromadb->-r requirements.txt (line 10)) (1.35.0)
+Requirement already satisfied: opentelemetry-sdk>=1.2.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from chromadb->-r requirements.txt (line 10)) (1.35.0)
+Requirement already satisfied: tokenizers>=0.13.2 in /home/s06zyelt/.local/lib/python3.10/site-packages (from chromadb->-r requirements.txt (line 10)) (0.21.2)
+Requirement already satisfied: pypika>=0.48.9 in /home/s06zyelt/.local/lib/python3.10/site-packages (from chromadb->-r requirements.txt (line 10)) (0.48.9)
+Requirement already satisfied: overrides>=7.3.1 in /home/s06zyelt/.local/lib/python3.10/site-packages (from chromadb->-r requirements.txt (line 10)) (7.7.0)
+Requirement already satisfied: importlib-resources in /home/s06zyelt/.local/lib/python3.10/site-packages (from chromadb->-r requirements.txt (line 10)) (6.5.2)
+Requirement already satisfied: grpcio>=1.58.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from chromadb->-r requirements.txt (line 10)) (1.73.1)
+Requirement already satisfied: bcrypt>=4.0.1 in /home/s06zyelt/.local/lib/python3.10/site-packages (from chromadb->-r requirements.txt (line 10)) (4.3.0)
+Requirement already satisfied: typer>=0.9.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from chromadb->-r requirements.txt (line 10)) (0.16.0)
+Requirement already satisfied: kubernetes>=28.1.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from chromadb->-r requirements.txt (line 10)) (33.1.0)
+Requirement already satisfied: mmh3>=4.0.1 in /home/s06zyelt/.local/lib/python3.10/site-packages (from chromadb->-r requirements.txt (line 10)) (5.1.0)
+Requirement already satisfied: orjson>=3.9.12 in /home/s06zyelt/.local/lib/python3.10/site-packages (from chromadb->-r requirements.txt (line 10)) (3.10.18)
+Requirement already satisfied: httpx>=0.27.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from chromadb->-r requirements.txt (line 10)) (0.28.1)
+Requirement already satisfied: rich>=10.11.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from chromadb->-r requirements.txt (line 10)) (14.0.0)
+Requirement already satisfied: jsonschema>=4.19.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from chromadb->-r requirements.txt (line 10)) (4.24.0)
+Requirement already satisfied: transformers<5.0.0,>=4.41.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from sentence-transformers->-r requirements.txt (line 13)) (4.54.0.dev0)
+Requirement already satisfied: torch>=1.11.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from sentence-transformers->-r requirements.txt (line 13)) (2.7.0)
+Requirement already satisfied: scikit-learn in /home/s06zyelt/.local/lib/python3.10/site-packages (from sentence-transformers->-r requirements.txt (line 13)) (1.7.0)
+Requirement already satisfied: scipy in /home/s06zyelt/.local/lib/python3.10/site-packages (from sentence-transformers->-r requirements.txt (line 13)) (1.15.3)
+Requirement already satisfied: huggingface-hub>=0.20.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from sentence-transformers->-r requirements.txt (line 13)) (0.33.4)
+Requirement already satisfied: filelock in /home/s06zyelt/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 16)) (3.18.0)
+Requirement already satisfied: dill<0.3.9,>=0.3.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 16)) (0.3.8)
+Requirement already satisfied: xxhash in /home/s06zyelt/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 16)) (3.5.0)
+Requirement already satisfied: multiprocess<0.70.17 in /home/s06zyelt/.local/lib/python3.10/site-packages (from datasets->-r requirements.txt (line 16)) (0.70.16)
+Requirement already satisfied: fsspec<=2025.3.0,>=2023.1.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from fsspec[http]<=2025.3.0,>=2023.1.0->datasets->-r requirements.txt (line 16)) (2025.3.0)
+Requirement already satisfied: jinja2 in /home/s06zyelt/.local/lib/python3.10/site-packages (from altair<6,>=4.0->streamlit->-r requirements.txt (line 2)) (3.1.6)
+Requirement already satisfied: narwhals>=1.14.2 in /home/s06zyelt/.local/lib/python3.10/site-packages (from altair<6,>=4.0->streamlit->-r requirements.txt (line 2)) (1.45.0)
+Requirement already satisfied: pyproject_hooks in /home/s06zyelt/.local/lib/python3.10/site-packages (from build>=1.0.3->chromadb->-r requirements.txt (line 10)) (1.2.0)
+Requirement already satisfied: tomli>=1.1.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from build>=1.0.3->chromadb->-r requirements.txt (line 10)) (2.2.1)
+Requirement already satisfied: aiohttp!=4.0.0a0,!=4.0.0a1 in /home/s06zyelt/.local/lib/python3.10/site-packages (from fsspec[http]<=2025.3.0,>=2023.1.0->datasets->-r requirements.txt (line 16)) (3.12.13)
+Requirement already satisfied: gitdb<5,>=4.0.1 in /home/s06zyelt/.local/lib/python3.10/site-packages (from gitpython!=3.1.19,<4,>=3.0.7->streamlit->-r requirements.txt (line 2)) (4.0.12)
+Requirement already satisfied: anyio in /home/s06zyelt/.local/lib/python3.10/site-packages (from httpx>=0.27.0->chromadb->-r requirements.txt (line 10)) (4.9.0)
+Requirement already satisfied: httpcore==1.* in /home/s06zyelt/.local/lib/python3.10/site-packages (from httpx>=0.27.0->chromadb->-r requirements.txt (line 10)) (1.0.9)
+Requirement already satisfied: h11>=0.16 in /home/s06zyelt/.local/lib/python3.10/site-packages (from httpcore==1.*->httpx>=0.27.0->chromadb->-r requirements.txt (line 10)) (0.16.0)
+Requirement already satisfied: hf-xet<2.0.0,>=1.1.2 in /home/s06zyelt/.local/lib/python3.10/site-packages (from huggingface-hub>=0.20.0->sentence-transformers->-r requirements.txt (line 13)) (1.1.5)
+Requirement already satisfied: attrs>=22.2.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from jsonschema>=4.19.0->chromadb->-r requirements.txt (line 10)) (25.3.0)
+Requirement already satisfied: jsonschema-specifications>=2023.03.6 in /home/s06zyelt/.local/lib/python3.10/site-packages (from jsonschema>=4.19.0->chromadb->-r requirements.txt (line 10)) (2025.4.1)
+Requirement already satisfied: referencing>=0.28.4 in /home/s06zyelt/.local/lib/python3.10/site-packages (from jsonschema>=4.19.0->chromadb->-r requirements.txt (line 10)) (0.36.2)
+Requirement already satisfied: rpds-py>=0.7.1 in /home/s06zyelt/.local/lib/python3.10/site-packages (from jsonschema>=4.19.0->chromadb->-r requirements.txt (line 10)) (0.26.0)
+Requirement already satisfied: six>=1.9.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from kubernetes>=28.1.0->chromadb->-r requirements.txt (line 10)) (1.17.0)
+Requirement already satisfied: google-auth>=1.0.1 in /home/s06zyelt/.local/lib/python3.10/site-packages (from kubernetes>=28.1.0->chromadb->-r requirements.txt (line 10)) (2.40.3)
+Requirement already satisfied: websocket-client!=0.40.0,!=0.41.*,!=0.42.*,>=0.32.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from kubernetes>=28.1.0->chromadb->-r requirements.txt (line 10)) (1.8.0)
+Requirement already satisfied: requests-oauthlib in /home/s06zyelt/.local/lib/python3.10/site-packages (from kubernetes>=28.1.0->chromadb->-r requirements.txt (line 10)) (2.0.0)
+Requirement already satisfied: oauthlib>=3.2.2 in /home/s06zyelt/.local/lib/python3.10/site-packages (from kubernetes>=28.1.0->chromadb->-r requirements.txt (line 10)) (3.3.1)
+Requirement already satisfied: durationpy>=0.7 in /home/s06zyelt/.local/lib/python3.10/site-packages (from kubernetes>=28.1.0->chromadb->-r requirements.txt (line 10)) (0.10)
+Requirement already satisfied: jsonpatch<2.0,>=1.33 in /software/easybuild-INTEL_A40/software/Miniforge3/24.1.2-0/lib/python3.10/site-packages (from langchain-core<1.0.0,>=0.3.66->langchain->-r requirements.txt (line 9)) (1.33)
+Requirement already satisfied: requests-toolbelt<2.0.0,>=1.0.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from langsmith>=0.1.17->langchain->-r requirements.txt (line 9)) (1.0.0)
+Requirement already satisfied: zstandard<0.24.0,>=0.23.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from langsmith>=0.1.17->langchain->-r requirements.txt (line 9)) (0.23.0)
+Requirement already satisfied: coloredlogs in /home/s06zyelt/.local/lib/python3.10/site-packages (from onnxruntime>=1.14.1->chromadb->-r requirements.txt (line 10)) (15.0.1)
+Requirement already satisfied: flatbuffers in /home/s06zyelt/.local/lib/python3.10/site-packages (from onnxruntime>=1.14.1->chromadb->-r requirements.txt (line 10)) (25.2.10)
+Requirement already satisfied: sympy in /home/s06zyelt/.local/lib/python3.10/site-packages (from onnxruntime>=1.14.1->chromadb->-r requirements.txt (line 10)) (1.14.0)
+Requirement already satisfied: importlib-metadata<8.8.0,>=6.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from opentelemetry-api>=1.2.0->chromadb->-r requirements.txt (line 10)) (8.0.0)
+Requirement already satisfied: googleapis-common-protos~=1.57 in /home/s06zyelt/.local/lib/python3.10/site-packages (from opentelemetry-exporter-otlp-proto-grpc>=1.2.0->chromadb->-r requirements.txt (line 10)) (1.70.0)
+Requirement already satisfied: opentelemetry-exporter-otlp-proto-common==1.35.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from opentelemetry-exporter-otlp-proto-grpc>=1.2.0->chromadb->-r requirements.txt (line 10)) (1.35.0)
+Requirement already satisfied: opentelemetry-proto==1.35.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from opentelemetry-exporter-otlp-proto-grpc>=1.2.0->chromadb->-r requirements.txt (line 10)) (1.35.0)
+Requirement already satisfied: opentelemetry-semantic-conventions==0.56b0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from opentelemetry-sdk>=1.2.0->chromadb->-r requirements.txt (line 10)) (0.56b0)
+Requirement already satisfied: backoff>=1.10.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from posthog<6.0.0,>=2.4.0->chromadb->-r requirements.txt (line 10)) (2.2.1)
+Requirement already satisfied: distro>=1.5.0 in /software/easybuild-INTEL_A40/software/Miniforge3/24.1.2-0/lib/python3.10/site-packages (from posthog<6.0.0,>=2.4.0->chromadb->-r requirements.txt (line 10)) (1.9.0)
+Requirement already satisfied: annotated-types>=0.6.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from pydantic<3.0.0,>=2.7.4->langchain->-r requirements.txt (line 9)) (0.7.0)
+Requirement already satisfied: pydantic-core==2.33.2 in /home/s06zyelt/.local/lib/python3.10/site-packages (from pydantic<3.0.0,>=2.7.4->langchain->-r requirements.txt (line 9)) (2.33.2)
+Requirement already satisfied: typing-inspection>=0.4.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from pydantic<3.0.0,>=2.7.4->langchain->-r requirements.txt (line 9)) (0.4.1)
+Requirement already satisfied: markdown-it-py>=2.2.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from rich>=10.11.0->chromadb->-r requirements.txt (line 10)) (3.0.0)
+Requirement already satisfied: pygments<3.0.0,>=2.13.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from rich>=10.11.0->chromadb->-r requirements.txt (line 10)) (2.19.2)
+Requirement already satisfied: greenlet>=1 in /home/s06zyelt/.local/lib/python3.10/site-packages (from SQLAlchemy<3,>=1.4->langchain->-r requirements.txt (line 9)) (3.2.3)
+Requirement already satisfied: networkx in /home/s06zyelt/.local/lib/python3.10/site-packages (from torch>=1.11.0->sentence-transformers->-r requirements.txt (line 13)) (3.3)
+Requirement already satisfied: nvidia-cuda-nvrtc-cu12==12.6.77 in /home/s06zyelt/.local/lib/python3.10/site-packages (from torch>=1.11.0->sentence-transformers->-r requirements.txt (line 13)) (12.6.77)
+Requirement already satisfied: nvidia-cuda-runtime-cu12==12.6.77 in /home/s06zyelt/.local/lib/python3.10/site-packages (from torch>=1.11.0->sentence-transformers->-r requirements.txt (line 13)) (12.6.77)
+Requirement already satisfied: nvidia-cuda-cupti-cu12==12.6.80 in /home/s06zyelt/.local/lib/python3.10/site-packages (from torch>=1.11.0->sentence-transformers->-r requirements.txt (line 13)) (12.6.80)
+Requirement already satisfied: nvidia-cudnn-cu12==9.5.1.17 in /home/s06zyelt/.local/lib/python3.10/site-packages (from torch>=1.11.0->sentence-transformers->-r requirements.txt (line 13)) (9.5.1.17)
+Requirement already satisfied: nvidia-cublas-cu12==12.6.4.1 in /home/s06zyelt/.local/lib/python3.10/site-packages (from torch>=1.11.0->sentence-transformers->-r requirements.txt (line 13)) (12.6.4.1)
+Requirement already satisfied: nvidia-cufft-cu12==11.3.0.4 in /home/s06zyelt/.local/lib/python3.10/site-packages (from torch>=1.11.0->sentence-transformers->-r requirements.txt (line 13)) (11.3.0.4)
+Requirement already satisfied: nvidia-curand-cu12==10.3.7.77 in /home/s06zyelt/.local/lib/python3.10/site-packages (from torch>=1.11.0->sentence-transformers->-r requirements.txt (line 13)) (10.3.7.77)
+Requirement already satisfied: nvidia-cusolver-cu12==11.7.1.2 in /home/s06zyelt/.local/lib/python3.10/site-packages (from torch>=1.11.0->sentence-transformers->-r requirements.txt (line 13)) (11.7.1.2)
+Requirement already satisfied: nvidia-cusparse-cu12==12.5.4.2 in /home/s06zyelt/.local/lib/python3.10/site-packages (from torch>=1.11.0->sentence-transformers->-r requirements.txt (line 13)) (12.5.4.2)
+Requirement already satisfied: nvidia-cusparselt-cu12==0.6.3 in /home/s06zyelt/.local/lib/python3.10/site-packages (from torch>=1.11.0->sentence-transformers->-r requirements.txt (line 13)) (0.6.3)
+Requirement already satisfied: nvidia-nccl-cu12==2.26.2 in /home/s06zyelt/.local/lib/python3.10/site-packages (from torch>=1.11.0->sentence-transformers->-r requirements.txt (line 13)) (2.26.2)
+Requirement already satisfied: nvidia-nvtx-cu12==12.6.77 in /home/s06zyelt/.local/lib/python3.10/site-packages (from torch>=1.11.0->sentence-transformers->-r requirements.txt (line 13)) (12.6.77)
+Requirement already satisfied: nvidia-nvjitlink-cu12==12.6.85 in /home/s06zyelt/.local/lib/python3.10/site-packages (from torch>=1.11.0->sentence-transformers->-r requirements.txt (line 13)) (12.6.85)
+Requirement already satisfied: nvidia-cufile-cu12==1.11.1.6 in /home/s06zyelt/.local/lib/python3.10/site-packages (from torch>=1.11.0->sentence-transformers->-r requirements.txt (line 13)) (1.11.1.6)
+Requirement already satisfied: triton==3.3.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from torch>=1.11.0->sentence-transformers->-r requirements.txt (line 13)) (3.3.0)
+Requirement already satisfied: setuptools>=40.8.0 in /software/easybuild-INTEL_A40/software/Miniforge3/24.1.2-0/lib/python3.10/site-packages (from triton==3.3.0->torch>=1.11.0->sentence-transformers->-r requirements.txt (line 13)) (69.2.0)
+Requirement already satisfied: regex!=2019.12.17 in /home/s06zyelt/.local/lib/python3.10/site-packages (from transformers<5.0.0,>=4.41.0->sentence-transformers->-r requirements.txt (line 13)) (2024.11.6)
+Requirement already satisfied: safetensors>=0.4.3 in /home/s06zyelt/.local/lib/python3.10/site-packages (from transformers<5.0.0,>=4.41.0->sentence-transformers->-r requirements.txt (line 13)) (0.5.3)
+Requirement already satisfied: shellingham>=1.3.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from typer>=0.9.0->chromadb->-r requirements.txt (line 10)) (1.5.4)
+Requirement already satisfied: httptools>=0.6.3 in /home/s06zyelt/.local/lib/python3.10/site-packages (from uvicorn[standard]>=0.18.3->chromadb->-r requirements.txt (line 10)) (0.6.4)
+Requirement already satisfied: python-dotenv>=0.13 in /home/s06zyelt/.local/lib/python3.10/site-packages (from uvicorn[standard]>=0.18.3->chromadb->-r requirements.txt (line 10)) (1.1.1)
+Requirement already satisfied: uvloop>=0.15.1 in /home/s06zyelt/.local/lib/python3.10/site-packages (from uvicorn[standard]>=0.18.3->chromadb->-r requirements.txt (line 10)) (0.21.0)
+Requirement already satisfied: watchfiles>=0.13 in /home/s06zyelt/.local/lib/python3.10/site-packages (from uvicorn[standard]>=0.18.3->chromadb->-r requirements.txt (line 10)) (1.1.0)
+Requirement already satisfied: websockets>=10.4 in /home/s06zyelt/.local/lib/python3.10/site-packages (from uvicorn[standard]>=0.18.3->chromadb->-r requirements.txt (line 10)) (12.0)
+Requirement already satisfied: joblib>=1.2.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from scikit-learn->sentence-transformers->-r requirements.txt (line 13)) (1.5.1)
+Requirement already satisfied: threadpoolctl>=3.1.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from scikit-learn->sentence-transformers->-r requirements.txt (line 13)) (3.6.0)
+Requirement already satisfied: aiohappyeyeballs>=2.5.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.3.0,>=2023.1.0->datasets->-r requirements.txt (line 16)) (2.6.1)
+Requirement already satisfied: aiosignal>=1.1.2 in /home/s06zyelt/.local/lib/python3.10/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.3.0,>=2023.1.0->datasets->-r requirements.txt (line 16)) (1.3.2)
+Requirement already satisfied: frozenlist>=1.1.1 in /home/s06zyelt/.local/lib/python3.10/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.3.0,>=2023.1.0->datasets->-r requirements.txt (line 16)) (1.7.0)
+Requirement already satisfied: multidict<7.0,>=4.5 in /home/s06zyelt/.local/lib/python3.10/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.3.0,>=2023.1.0->datasets->-r requirements.txt (line 16)) (6.5.0)
+Requirement already satisfied: propcache>=0.2.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.3.0,>=2023.1.0->datasets->-r requirements.txt (line 16)) (0.3.2)
+Requirement already satisfied: yarl<2.0,>=1.17.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1->fsspec[http]<=2025.3.0,>=2023.1.0->datasets->-r requirements.txt (line 16)) (1.20.1)
+Requirement already satisfied: smmap<6,>=3.0.1 in /home/s06zyelt/.local/lib/python3.10/site-packages (from gitdb<5,>=4.0.1->gitpython!=3.1.19,<4,>=3.0.7->streamlit->-r requirements.txt (line 2)) (5.0.2)
+Requirement already satisfied: pyasn1-modules>=0.2.1 in /home/s06zyelt/.local/lib/python3.10/site-packages (from google-auth>=1.0.1->kubernetes>=28.1.0->chromadb->-r requirements.txt (line 10)) (0.4.2)
+Requirement already satisfied: rsa<5,>=3.1.4 in /home/s06zyelt/.local/lib/python3.10/site-packages (from google-auth>=1.0.1->kubernetes>=28.1.0->chromadb->-r requirements.txt (line 10)) (4.9.1)
+Requirement already satisfied: zipp>=0.5 in /home/s06zyelt/.local/lib/python3.10/site-packages (from importlib-metadata<8.8.0,>=6.0->opentelemetry-api>=1.2.0->chromadb->-r requirements.txt (line 10)) (3.23.0)
+Requirement already satisfied: MarkupSafe>=2.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from jinja2->altair<6,>=4.0->streamlit->-r requirements.txt (line 2)) (2.1.5)
+Requirement already satisfied: jsonpointer>=1.9 in /software/easybuild-INTEL_A40/software/Miniforge3/24.1.2-0/lib/python3.10/site-packages (from jsonpatch<2.0,>=1.33->langchain-core<1.0.0,>=0.3.66->langchain->-r requirements.txt (line 9)) (2.4)
+Requirement already satisfied: mdurl~=0.1 in /home/s06zyelt/.local/lib/python3.10/site-packages (from markdown-it-py>=2.2.0->rich>=10.11.0->chromadb->-r requirements.txt (line 10)) (0.1.2)
+Requirement already satisfied: mpmath<1.4,>=1.1.0 in /home/s06zyelt/.local/lib/python3.10/site-packages (from sympy->onnxruntime>=1.14.1->chromadb->-r requirements.txt (line 10)) (1.3.0)
+Requirement already satisfied: exceptiongroup>=1.0.2 in /home/s06zyelt/.local/lib/python3.10/site-packages (from anyio->httpx>=0.27.0->chromadb->-r requirements.txt (line 10)) (1.3.0)
+Requirement already satisfied: sniffio>=1.1 in /home/s06zyelt/.local/lib/python3.10/site-packages (from anyio->httpx>=0.27.0->chromadb->-r requirements.txt (line 10)) (1.3.1)
+Requirement already satisfied: humanfriendly>=9.1 in /home/s06zyelt/.local/lib/python3.10/site-packages (from coloredlogs->onnxruntime>=1.14.1->chromadb->-r requirements.txt (line 10)) (10.0)
+Requirement already satisfied: pyasn1<0.7.0,>=0.6.1 in /home/s06zyelt/.local/lib/python3.10/site-packages (from pyasn1-modules>=0.2.1->google-auth>=1.0.1->kubernetes>=28.1.0->chromadb->-r requirements.txt (line 10)) (0.6.1)
+WARNING: Ignoring invalid distribution -orch (/home/s06zyelt/.local/lib/python3.10/site-packages)
+WARNING: Ignoring invalid distribution -orch (/home/s06zyelt/.local/lib/python3.10/site-packages)
+WARNING: Ignoring invalid distribution -orch (/home/s06zyelt/.local/lib/python3.10/site-packages)
+WARNING: Ignoring invalid distribution -orch (/home/s06zyelt/.local/lib/python3.10/site-packages)
+++++++++++++++++++++++START+++++++++++++++++++++++++++++
+Starting loading model...
+Fetching 4 files:   0%|          | 0/4 [00:00<?, ?it/s]Fetching 4 files:  25%|██▌       | 1/4 [02:06<06:19, 126.53s/it]Fetching 4 files:  75%|███████▌  | 3/4 [02:14<00:35, 35.60s/it] Fetching 4 files: 100%|██████████| 4/4 [02:14<00:00, 33.52s/it]
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:04<00:13,  4.53s/it]Loading checkpoint shards:  50%|█████     | 2/4 [00:08<00:08,  4.32s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:12<00:04,  4.30s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:13<00:00,  2.75s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:13<00:00,  3.34s/it]
+Using a slow image processor as `use_fast` is unset and a slow processor was saved with this model. `use_fast=True` will be the default behavior in v4.52, even if the model was saved with a slow processor. This will result in minor differences in outputs. You'll still be able to use a slow processor with `use_fast=False`.
+Finished loading model...
+Starting evaluation...
+Evaluating:   0% 0/100 [00:00<?, ?it/s]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0001] Accuracy: 0.0000 (0/11)
+ Running Avg: 0.0000  (0/11)
+ --------------------------------------------------
+Evaluating:   1% 1/100 [00:14<24:44, 15.00s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0002] Accuracy: 0.2500 (2/8)
+ Running Avg: 0.1053  (2/19)
+ --------------------------------------------------
+Evaluating:   2% 2/100 [00:30<25:03, 15.34s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0003] Accuracy: 0.3333 (3/9)
+ Running Avg: 0.1786  (5/28)
+ --------------------------------------------------
+Evaluating:   3% 3/100 [00:42<22:00, 13.62s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0004] Accuracy: 0.6250 (5/8)
+ Running Avg: 0.2778  (10/36)
+ --------------------------------------------------
+Evaluating:   4% 4/100 [00:55<21:39, 13.54s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0005] Accuracy: 0.2143 (3/14)
+ Running Avg: 0.2600  (13/50)
+ --------------------------------------------------
+Evaluating:   5% 5/100 [01:07<20:18, 12.83s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0006] Accuracy: 0.0000 (0/7)
+ Running Avg: 0.2281  (13/57)
+ --------------------------------------------------
+Evaluating:   6% 6/100 [01:19<19:48, 12.64s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0007] Accuracy: 0.5000 (6/12)
+ Running Avg: 0.2754  (19/69)
+ --------------------------------------------------
+Evaluating:   7% 7/100 [01:35<21:09, 13.65s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0008] Accuracy: 0.1429 (1/7)
+ Running Avg: 0.2632  (20/76)
+ --------------------------------------------------
+Evaluating:   8% 8/100 [01:46<19:58, 13.02s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0009] Accuracy: 0.4444 (4/9)
+ Running Avg: 0.2824  (24/85)
+ --------------------------------------------------
+Evaluating:   9% 9/100 [02:02<20:48, 13.72s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0010] Accuracy: 0.1667 (1/6)
+ Running Avg: 0.2747  (25/91)
+ --------------------------------------------------
+Evaluating:  10% 10/100 [02:13<19:30, 13.00s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0011] Accuracy: 0.3750 (3/8)
+ Running Avg: 0.2828  (28/99)
+ --------------------------------------------------
+Evaluating:  11% 11/100 [02:25<18:40, 12.59s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0012] Accuracy: 0.8333 (5/6)
+ Running Avg: 0.3143  (33/105)
+ --------------------------------------------------
+Evaluating:  12% 12/100 [02:37<18:13, 12.43s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0013] Accuracy: 0.3750 (6/16)
+ Running Avg: 0.3223  (39/121)
+ --------------------------------------------------
+Evaluating:  13% 13/100 [02:48<17:41, 12.20s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0014] Accuracy: 0.2308 (3/13)
+ Running Avg: 0.3134  (42/134)
+ --------------------------------------------------
+Evaluating:  14% 14/100 [03:00<17:21, 12.11s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0015] Accuracy: 0.3200 (8/25)
+ Running Avg: 0.3145  (50/159)
+ --------------------------------------------------
+Evaluating:  15% 15/100 [03:24<21:59, 15.53s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0016] Accuracy: 0.0000 (0/9)
+ Running Avg: 0.2976  (50/168)
+ --------------------------------------------------
+Evaluating:  16% 16/100 [03:36<20:20, 14.53s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0017] Accuracy: 0.3077 (4/13)
+ Running Avg: 0.2983  (54/181)
+ --------------------------------------------------
+Evaluating:  17% 17/100 [03:56<22:30, 16.27s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0018] Accuracy: 0.4545 (10/22)
+ Running Avg: 0.3153  (64/203)
+ --------------------------------------------------
+Evaluating:  18% 18/100 [04:24<26:57, 19.72s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0019] Accuracy: 0.5714 (4/7)
+ Running Avg: 0.3238  (68/210)
+ --------------------------------------------------
+Evaluating:  19% 19/100 [04:36<23:19, 17.27s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0020] Accuracy: 0.1111 (1/9)
+ Running Avg: 0.3151  (69/219)
+ --------------------------------------------------
+Evaluating:  20% 20/100 [04:48<20:55, 15.70s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0021] Accuracy: 0.4737 (9/19)
+ Running Avg: 0.3277  (78/238)
+ --------------------------------------------------
+Evaluating:  21% 21/100 [05:08<22:27, 17.05s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0022] Accuracy: 0.0000 (0/11)
+ Running Avg: 0.3133  (78/249)
+ --------------------------------------------------
+Evaluating:  22% 22/100 [05:22<21:05, 16.22s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0023] Accuracy: 0.3333 (3/9)
+ Running Avg: 0.3140  (81/258)
+ --------------------------------------------------
+Evaluating:  23% 23/100 [05:34<19:18, 15.04s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0024] Accuracy: 0.4444 (4/9)
+ Running Avg: 0.3184  (85/267)
+ --------------------------------------------------
+Evaluating:  24% 24/100 [05:46<17:45, 14.02s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0025] Accuracy: 0.0667 (1/15)
+ Running Avg: 0.3050  (86/282)
+ --------------------------------------------------
+Evaluating:  25% 25/100 [06:06<19:47, 15.83s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0026] Accuracy: 0.5000 (6/12)
+ Running Avg: 0.3129  (92/294)
+ --------------------------------------------------
+Evaluating:  26% 26/100 [06:22<19:38, 15.92s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0027] Accuracy: 0.1111 (2/18)
+ Running Avg: 0.3013  (94/312)
+ --------------------------------------------------
+Evaluating:  27% 27/100 [06:37<19:04, 15.68s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0028] Accuracy: 0.5556 (5/9)
+ Running Avg: 0.3084  (99/321)
+ --------------------------------------------------
+Evaluating:  28% 28/100 [06:49<17:30, 14.59s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0029] Accuracy: 0.7143 (10/14)
+ Running Avg: 0.3254  (109/335)
+ --------------------------------------------------
+Evaluating:  29% 29/100 [07:05<17:42, 14.97s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0030] Accuracy: 0.6087 (14/23)
+ Running Avg: 0.3436  (123/358)
+ --------------------------------------------------
+Evaluating:  30% 30/100 [07:26<19:20, 16.58s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0031] Accuracy: 0.1429 (1/7)
+ Running Avg: 0.3397  (124/365)
+ --------------------------------------------------
+Evaluating:  31% 31/100 [07:37<17:15, 15.01s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0032] Accuracy: 0.1818 (2/11)
+ Running Avg: 0.3351  (126/376)
+ --------------------------------------------------
+Evaluating:  32% 32/100 [07:50<16:13, 14.32s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0033] Accuracy: 0.3750 (3/8)
+ Running Avg: 0.3359  (129/384)
+ --------------------------------------------------
+Evaluating:  33% 33/100 [08:03<15:39, 14.02s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0034] Accuracy: 0.3571 (5/14)
+ Running Avg: 0.3367  (134/398)
+ --------------------------------------------------
+Evaluating:  34% 34/100 [08:15<14:37, 13.29s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0035] Accuracy: 0.0909 (1/11)
+ Running Avg: 0.3301  (135/409)
+ --------------------------------------------------
+Evaluating:  35% 35/100 [08:31<15:22, 14.20s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0036] Accuracy: 0.4667 (7/15)
+ Running Avg: 0.3349  (142/424)
+ --------------------------------------------------
+Evaluating:  36% 36/100 [08:47<15:41, 14.71s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0037] Accuracy: 0.5556 (5/9)
+ Running Avg: 0.3395  (147/433)
+ --------------------------------------------------
+Evaluating:  37% 37/100 [08:58<14:28, 13.79s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0038] Accuracy: 0.5000 (3/6)
+ Running Avg: 0.3417  (150/439)
+ --------------------------------------------------
+Evaluating:  38% 38/100 [09:11<13:54, 13.46s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0039] Accuracy: 0.4062 (13/32)
+ Running Avg: 0.3461  (163/471)
+ --------------------------------------------------
+Evaluating:  39% 39/100 [09:43<19:16, 18.96s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0040] Accuracy: 0.0000 (0/21)
+ Running Avg: 0.3313  (163/492)
+ --------------------------------------------------
+Evaluating:  40% 40/100 [09:56<17:09, 17.15s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0041] Accuracy: 0.0909 (1/11)
+ Running Avg: 0.3260  (164/503)
+ --------------------------------------------------
+Evaluating:  41% 41/100 [10:10<15:58, 16.24s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0042] Accuracy: 0.1739 (4/23)
+ Running Avg: 0.3194  (168/526)
+ --------------------------------------------------
+Evaluating:  42% 42/100 [10:37<18:53, 19.54s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0043] Accuracy: 0.3333 (3/9)
+ Running Avg: 0.3196  (171/535)
+ --------------------------------------------------
+Evaluating:  43% 43/100 [10:49<16:14, 17.10s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0044] Accuracy: 0.0000 (0/9)
+ Running Avg: 0.3143  (171/544)
+ --------------------------------------------------
+Evaluating:  44% 44/100 [11:03<15:08, 16.21s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0045] Accuracy: 0.1667 (1/6)
+ Running Avg: 0.3127  (172/550)
+ --------------------------------------------------
+Evaluating:  45% 45/100 [11:15<13:43, 14.98s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0046] Accuracy: 0.3333 (5/15)
+ Running Avg: 0.3133  (177/565)
+ --------------------------------------------------
+Evaluating:  46% 46/100 [11:31<13:44, 15.26s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0047] Accuracy: 0.2308 (3/13)
+ Running Avg: 0.3114  (180/578)
+ --------------------------------------------------
+Evaluating:  47% 47/100 [11:43<12:37, 14.29s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0048] Accuracy: 0.4211 (8/19)
+ Running Avg: 0.3149  (188/597)
+ --------------------------------------------------
+Evaluating:  48% 48/100 [12:01<13:28, 15.54s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0049] Accuracy: 0.0000 (0/10)
+ Running Avg: 0.3097  (188/607)
+ --------------------------------------------------
+Evaluating:  49% 49/100 [12:14<12:25, 14.61s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0050] Accuracy: 0.5000 (6/12)
+ Running Avg: 0.3134  (194/619)
+ --------------------------------------------------
+Evaluating:  50% 50/100 [12:25<11:24, 13.69s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0051] Accuracy: 0.1250 (1/8)
+ Running Avg: 0.3110  (195/627)
+ --------------------------------------------------
+Evaluating:  51% 51/100 [12:36<10:35, 12.97s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0052] Accuracy: 0.0000 (0/19)
+ Running Avg: 0.3019  (195/646)
+ --------------------------------------------------
+Evaluating:  52% 52/100 [13:16<16:42, 20.89s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0053] Accuracy: 0.4167 (5/12)
+ Running Avg: 0.3040  (200/658)
+ --------------------------------------------------
+Evaluating:  53% 53/100 [13:29<14:26, 18.44s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0054] Accuracy: 0.2143 (3/14)
+ Running Avg: 0.3021  (203/672)
+ --------------------------------------------------
+Evaluating:  54% 54/100 [13:41<12:49, 16.74s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0055] Accuracy: 1.0000 (5/5)
+ Running Avg: 0.3072  (208/677)
+ --------------------------------------------------
+Evaluating:  55% 55/100 [13:53<11:23, 15.18s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0056] Accuracy: 0.2500 (2/8)
+ Running Avg: 0.3066  (210/685)
+ --------------------------------------------------
+Evaluating:  56% 56/100 [14:05<10:22, 14.15s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0057] Accuracy: 0.1429 (1/7)
+ Running Avg: 0.3049  (211/692)
+ --------------------------------------------------
+Evaluating:  57% 57/100 [14:17<09:41, 13.52s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0058] Accuracy: 0.2000 (1/5)
+ Running Avg: 0.3042  (212/697)
+ --------------------------------------------------
+Evaluating:  58% 58/100 [14:28<08:58, 12.83s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0059] Accuracy: 0.3750 (3/8)
+ Running Avg: 0.3050  (215/705)
+ --------------------------------------------------
+Evaluating:  59% 59/100 [14:39<08:26, 12.35s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0060] Accuracy: 0.4062 (13/32)
+ Running Avg: 0.3094  (228/737)
+ --------------------------------------------------
+Evaluating:  60% 60/100 [15:12<12:22, 18.56s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0061] Accuracy: 0.2727 (3/11)
+ Running Avg: 0.3088  (231/748)
+ --------------------------------------------------
+Evaluating:  61% 61/100 [15:25<10:50, 16.69s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0062] Accuracy: 0.0000 (0/31)
+ Running Avg: 0.2965  (231/779)
+ --------------------------------------------------
+Evaluating:  62% 62/100 [16:04<14:58, 23.64s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0063] Accuracy: 0.4444 (4/9)
+ Running Avg: 0.2982  (235/788)
+ --------------------------------------------------
+Evaluating:  63% 63/100 [16:17<12:33, 20.37s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0064] Accuracy: 0.0000 (0/12)
+ Running Avg: 0.2938  (235/800)
+ --------------------------------------------------
+Evaluating:  64% 64/100 [16:33<11:28, 19.13s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0065] Accuracy: 0.0000 (0/5)
+ Running Avg: 0.2919  (235/805)
+ --------------------------------------------------
+Evaluating:  65% 65/100 [16:45<09:54, 16.98s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0066] Accuracy: 0.5714 (4/7)
+ Running Avg: 0.2943  (239/812)
+ --------------------------------------------------
+Evaluating:  66% 66/100 [16:58<08:52, 15.67s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0067] Accuracy: 0.2222 (2/9)
+ Running Avg: 0.2935  (241/821)
+ --------------------------------------------------
+Evaluating:  67% 67/100 [17:09<07:55, 14.40s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0068] Accuracy: 0.1250 (1/8)
+ Running Avg: 0.2919  (242/829)
+ --------------------------------------------------
+Evaluating:  68% 68/100 [17:23<07:30, 14.07s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0069] Accuracy: 0.0000 (0/5)
+ Running Avg: 0.2902  (242/834)
+ --------------------------------------------------
+Evaluating:  69% 69/100 [17:35<07:03, 13.67s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0070] Accuracy: 0.2500 (3/12)
+ Running Avg: 0.2896  (245/846)
+ --------------------------------------------------
+Evaluating:  70% 70/100 [17:55<07:41, 15.38s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0071] Accuracy: 0.0000 (0/41)
+ Running Avg: 0.2762  (245/887)
+ --------------------------------------------------
+Evaluating:  71% 71/100 [18:35<11:03, 22.88s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0072] Accuracy: 0.4286 (3/7)
+ Running Avg: 0.2774  (248/894)
+ --------------------------------------------------
+Evaluating:  72% 72/100 [18:47<09:10, 19.65s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0073] Accuracy: 0.6250 (5/8)
+ Running Avg: 0.2805  (253/902)
+ --------------------------------------------------
+Evaluating:  73% 73/100 [18:59<07:43, 17.15s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0074] Accuracy: 0.2500 (3/12)
+ Running Avg: 0.2801  (256/914)
+ --------------------------------------------------
+Evaluating:  74% 74/100 [19:10<06:43, 15.51s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0075] Accuracy: 0.2222 (4/18)
+ Running Avg: 0.2790  (260/932)
+ --------------------------------------------------
+Evaluating:  75% 75/100 [19:26<06:31, 15.67s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0076] Accuracy: 0.3810 (8/21)
+ Running Avg: 0.2812  (268/953)
+ --------------------------------------------------
+Evaluating:  76% 76/100 [19:48<06:55, 17.33s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0077] Accuracy: 0.0000 (0/12)
+ Running Avg: 0.2777  (268/965)
+ --------------------------------------------------
+Evaluating:  77% 77/100 [19:59<06:00, 15.68s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0078] Accuracy: 0.3750 (3/8)
+ Running Avg: 0.2785  (271/973)
+ --------------------------------------------------
+Evaluating:  78% 78/100 [20:11<05:20, 14.57s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0079] Accuracy: 0.5714 (4/7)
+ Running Avg: 0.2806  (275/980)
+ --------------------------------------------------
+Evaluating:  79% 79/100 [20:24<04:55, 14.05s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0080] Accuracy: 0.0000 (0/11)
+ Running Avg: 0.2775  (275/991)
+ --------------------------------------------------
+Evaluating:  80% 80/100 [20:35<04:23, 13.19s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0081] Accuracy: 0.1250 (1/8)
+ Running Avg: 0.2763  (276/999)
+ --------------------------------------------------
+Evaluating:  81% 81/100 [20:47<04:04, 12.86s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0082] Accuracy: 0.1429 (2/14)
+ Running Avg: 0.2744  (278/1013)
+ --------------------------------------------------
+Evaluating:  82% 82/100 [21:04<04:10, 13.94s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0083] Accuracy: 0.1875 (3/16)
+ Running Avg: 0.2731  (281/1029)
+ --------------------------------------------------
+Evaluating:  83% 83/100 [21:16<03:46, 13.33s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0084] Accuracy: 0.2222 (2/9)
+ Running Avg: 0.2726  (283/1038)
+ --------------------------------------------------
+Evaluating:  84% 84/100 [21:27<03:24, 12.77s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0085] Accuracy: 0.1667 (2/12)
+ Running Avg: 0.2714  (285/1050)
+ --------------------------------------------------
+Evaluating:  85% 85/100 [21:40<03:10, 12.70s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0086] Accuracy: 0.0000 (0/39)
+ Running Avg: 0.2617  (285/1089)
+ --------------------------------------------------
+Evaluating:  86% 86/100 [22:20<04:54, 21.04s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0087] Accuracy: 0.3333 (4/12)
+ Running Avg: 0.2625  (289/1101)
+ --------------------------------------------------
+Evaluating:  87% 87/100 [22:32<03:55, 18.10s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0088] Accuracy: 0.4286 (3/7)
+ Running Avg: 0.2635  (292/1108)
+ --------------------------------------------------
+Evaluating:  88% 88/100 [22:43<03:14, 16.17s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0089] Accuracy: 0.5000 (6/12)
+ Running Avg: 0.2661  (298/1120)
+ --------------------------------------------------
+Evaluating:  89% 89/100 [22:55<02:43, 14.87s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0090] Accuracy: 0.5556 (5/9)
+ Running Avg: 0.2684  (303/1129)
+ --------------------------------------------------
+Evaluating:  90% 90/100 [23:07<02:19, 13.90s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0091] Accuracy: 0.6667 (6/9)
+ Running Avg: 0.2715  (309/1138)
+ --------------------------------------------------
+Evaluating:  91% 91/100 [23:19<02:00, 13.34s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0092] Accuracy: 0.1111 (1/9)
+ Running Avg: 0.2703  (310/1147)
+ --------------------------------------------------
+Evaluating:  92% 92/100 [23:31<01:44, 13.10s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0093] Accuracy: 0.0000 (0/9)
+ Running Avg: 0.2682  (310/1156)
+ --------------------------------------------------
+Evaluating:  93% 93/100 [23:43<01:29, 12.79s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0094] Accuracy: 0.3750 (3/8)
+ Running Avg: 0.2689  (313/1164)
+ --------------------------------------------------
+Evaluating:  94% 94/100 [23:55<01:14, 12.40s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0095] Accuracy: 0.4118 (7/17)
+ Running Avg: 0.2710  (320/1181)
+ --------------------------------------------------
+Evaluating:  95% 95/100 [24:10<01:06, 13.31s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0096] Accuracy: 0.4167 (5/12)
+ Running Avg: 0.2724  (325/1193)
+ --------------------------------------------------
+Evaluating:  96% 96/100 [24:26<00:55, 14.00s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0097] Accuracy: 0.6667 (6/9)
+ Running Avg: 0.2754  (331/1202)
+ --------------------------------------------------
+Evaluating:  97% 97/100 [24:37<00:39, 13.23s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0098] Accuracy: 0.1538 (2/13)
+ Running Avg: 0.2741  (333/1215)
+ --------------------------------------------------
+Evaluating:  98% 98/100 [24:50<00:26, 13.09s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0099] Accuracy: 0.3846 (5/13)
+ Running Avg: 0.2752  (338/1228)
+ --------------------------------------------------
+Evaluating:  99% 99/100 [25:08<00:14, 14.43s/it]Setting `pad_token_id` to `eos_token_id`:2 for open-end generation.
+[0100] Accuracy: 0.0000 (0/12)
+ Running Avg: 0.2726  (338/1240)
+ --------------------------------------------------
+Evaluating: 100% 100/100 [25:47<00:00, 22.07s/it]Evaluating: 100% 100/100 [25:47<00:00, 15.48s/it]
+Finished evaluation...
+Saving the dataset (0/1 shards):   0%|          | 0/100 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 100/100 [00:00<00:00, 17214.46 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 100/100 [00:00<00:00, 16155.55 examples/s]
+Field-wise Accuracy: 0.2726
+++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++FINISHED++++++++++++++++++++++++++
