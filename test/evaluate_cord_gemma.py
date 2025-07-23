@@ -93,7 +93,7 @@ for idx, sample in enumerate(tqdm(test_set, total=len(test_set), desc="Evaluatin
     ).to(model.device)
 
     with torch.no_grad():
-        generated_ids = model.generate(**inputs, max_new_tokens=512)
+        generated_ids = model.generate(**inputs, max_new_tokens=1024)
 
     generated_ids_trimmed = [
         out_ids[len(in_ids):] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
