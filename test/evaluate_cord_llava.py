@@ -148,7 +148,7 @@ features = Features({
     "total": Value("int32", id=None)
 })
 pred_dataset = Dataset.from_list(records, features=features)
-pred_dataset.save_to_disk("datasets/cord_v2_llava-1.5-7b-hf")
+pred_dataset.save_to_disk("datasets/cord_v2_llava")
 
 
 overall_accuracy = total_correct / total_elements if total_elements else 0
