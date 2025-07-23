@@ -51,11 +51,9 @@ instruction = (
 
 print("Starting loading model...")
 
-model_id = "google/gemma-4b-it"
+model_id = "google/gemma-3-4b-it"
 model = Gemma3ForConditionalGeneration.from_pretrained(
     model_id,
-    torch_dtype=torch.float16,
-    low_cpu_mem_usage=True,
     device_map="auto"
 )
 processor = AutoProcessor.from_pretrained(model_id)
