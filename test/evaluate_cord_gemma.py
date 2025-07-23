@@ -51,7 +51,7 @@ instruction = (
 
 print("Starting loading model...")
 
-model_id = "google/gemma-4b-it-vision"
+model_id = "google/gemma-4b-it"
 model = Gemma3ForConditionalGeneration.from_pretrained(
     model_id,
     torch_dtype=torch.float16,
