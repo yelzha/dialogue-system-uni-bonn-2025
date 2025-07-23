@@ -7,7 +7,7 @@ from PIL import Image
 from datasets import load_dataset
 from datasets import Dataset, Features, Value, Image
 from qwen_vl_utils import process_vision_info
-from transformers import Gemma3ForConditionalGeneration, AutoProcessor, BitsAndBytesConfig
+from transformers import Gemma3ForConditionalGeneration, AutoProcessor
 
 from utils import clean_output, extract_fields, compute_fieldwise_accuracy
 
@@ -51,17 +51,11 @@ instruction = (
 
 print("Starting loading model...")
 
-quant_config = BitsAndBytesConfig(
-    load_in_4bit=True,
-    bnb_4bit_compute_dtype=torch.float16,
-    bnb_4bit_use_double_quant=True,
-    bnb_4bit_quant_type="nf4"
-)
-
 model_id = "google/gemma-4b-it-vision"
 model = Gemma3ForConditionalGeneration.from_pretrained(
     model_id,
-    quantization_config=quant_config,
+    torch_dtype=torch.float16,
+    low_cpu_mem_usage=True,
     device_map="auto"
 )
 processor = AutoProcessor.from_pretrained(model_id)
