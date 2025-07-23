@@ -19,5 +19,5 @@ pip install -r requirements.txt
 
 # Run the evaluation script
 echo "++++++++++++++++++++++START+++++++++++++++++++++++++++++"
-python -u test/evaluate_cord_qwen.py
+python -u test/evaluate_cord_gemma.py
 echo "++++++++++++++++++++++FINISHED++++++++++++++++++++++++++"
