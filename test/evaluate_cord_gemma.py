@@ -6,9 +6,8 @@ from tqdm import tqdm
 from PIL import Image
 from datasets import load_dataset
 from datasets import Dataset, Features, Value, Image
-from transformers import AutoProcessor
 from qwen_vl_utils import process_vision_info
-from transformers import Gemma3ForConditionalGeneration
+from transformers import Gemma3ForConditionalGeneration, AutoProcessor, BitsAndBytesConfig
 
 from utils import clean_output, extract_fields, compute_fieldwise_accuracy
 
@@ -51,9 +50,19 @@ instruction = (
 )
 
 print("Starting loading model...")
-model_id = "google/gemma-3-4b-it"
+
+quant_config = BitsAndBytesConfig(
+    load_in_4bit=True,
+    bnb_4bit_compute_dtype=torch.float16,
+    bnb_4bit_use_double_quant=True,
+    bnb_4bit_quant_type="nf4"
+)
+
+model_id = "google/gemma-4b-it-vision"
 model = Gemma3ForConditionalGeneration.from_pretrained(
-    model_id, device_map="auto"
+    model_id,
+    quantization_config=quant_config,
+    device_map="auto"
 )
 processor = AutoProcessor.from_pretrained(model_id)
 print("Finished loading model...")
@@ -92,7 +101,7 @@ for idx, sample in enumerate(tqdm(test_set, total=len(test_set), desc="Evaluatin
     ).to(model.device)
 
     with torch.no_grad():
-        generated_ids = model.generate(**inputs, max_new_tokens=1024)
+        generated_ids = model.generate(**inputs, max_new_tokens=512)
 
     generated_ids_trimmed = [
         out_ids[len(in_ids):] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
@@ -133,6 +142,8 @@ for idx, sample in enumerate(tqdm(test_set, total=len(test_set), desc="Evaluatin
         f"({total_correct}/{total_elements})\n",
         f"{'-'*50}", flush=True
     )
+    del inputs, generated_ids, generated_ids_trimmed
+    torch.cuda.empty_cache()
 print("Finished evaluation...")
 
 features = Features({
@@ -146,7 +157,7 @@ features = Features({
     "total": Value("int32", id=None)
 })
 pred_dataset = Dataset.from_list(records, features=features)
-pred_dataset.save_to_disk("datasets/cord_v2_gemma-4b-it-vision")
+pred_dataset.save_to_disk("datasets/cord_v2_gemma")
 
 
 overall_accuracy = total_correct / total_elements if total_elements else 0

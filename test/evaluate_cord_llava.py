@@ -6,9 +6,8 @@ from tqdm import tqdm
 from PIL import Image
 from datasets import load_dataset
 from datasets import Dataset, Features, Value, Image
-from transformers import AutoProcessor
 from qwen_vl_utils import process_vision_info
-from transformers import LlavaForConditionalGeneration
+from transformers import LlavaNextForConditionalGeneration, LlavaNextProcessor
 
 from utils import clean_output, extract_fields, compute_fieldwise_accuracy
 
@@ -51,11 +50,14 @@ instruction = (
 )
 
 print("Starting loading model...")
-model_id = "llava-hf/llava-1.5-7b-hf"
-model = LlavaForConditionalGeneration.from_pretrained(
-    model_id, torch_dtype=torch.float16, device_map="auto"
+model_id = "llava-hf/llava-v1.6-mistral-7b-hf"
+model = LlavaNextForConditionalGeneration.from_pretrained(
+    model_id,
+    torch_dtype=torch.float16,
+    low_cpu_mem_usage=True,
+    device_map="auto"
 )
-processor = AutoProcessor.from_pretrained(model_id)
+processor = LlavaNextProcessor.from_pretrained(model_id)
 print("Finished loading model...")
 
 cord_dataset = load_dataset("naver-clova-ix/cord-v2")
@@ -133,6 +135,8 @@ for idx, sample in enumerate(tqdm(test_set, total=len(test_set), desc="Evaluatin
         f"({total_correct}/{total_elements})\n",
         f"{'-'*50}", flush=True
     )
+    del inputs, generated_ids, generated_ids_trimmed
+    torch.cuda.empty_cache()
 print("Finished evaluation...")
 
 features = Features({
