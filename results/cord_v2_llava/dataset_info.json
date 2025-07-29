@@ -1,0 +1,36 @@
+{
+  "citation": "",
+  "description": "",
+  "features": {
+    "id": {
+      "dtype": "int32",
+      "_type": "Value"
+    },
+    "ground_truth": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "predicted": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "raw": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "accuracy": {
+      "dtype": "float32",
+      "_type": "Value"
+    },
+    "correct": {
+      "dtype": "int32",
+      "_type": "Value"
+    },
+    "total": {
+      "dtype": "int32",
+      "_type": "Value"
+    }
+  },
+  "homepage": "",
+  "license": ""
+}
