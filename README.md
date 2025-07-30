@@ -114,8 +114,8 @@ A local-first AI agent system to parse, store, search, and analyze invoices and 
 ## Folder Structure
 
 dialogue-system-uni-bonn-2025  
-├── dataset/  
 ├── notebooks/  
+├── results/  
 ├── src/  
 │   ├── data/  
 │   ├── docs/  
